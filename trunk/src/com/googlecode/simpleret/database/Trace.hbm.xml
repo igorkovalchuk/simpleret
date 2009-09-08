@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="com.googlecode.simpleret.database.Trace" table="te">
+
+        <!-- <id name="id" column="ID">
+            <generator class="native"/>
+        </id> -->
+
+        <id name="id" column="its_id" />
+
+		<property name="vocabularyId" column="vocab_id"/>
+		<property name="startId" column="start_id"/>
+		<property name="endId" column="end_id"/>
+		<property name="parentId" column="parent_id"/>
+		<property name="return" column="ret"/>
+		<property name="level" column="lev"/>
+		<property name="colourMarker" column="colour"/>
+		
+    </class>
+
+</hibernate-mapping>

@@ -1,0 +1,48 @@
+
+Version 1.5.0. September 2009.
+
+	New start.
+	Attempt to rewrite this project using 1.3 and 1.4 versions.
+	Planned: use JPDA in the Java/J2EE trace recorder.
+	Planned: create a trace recorder for Perl.
+
+	Why ?
+	1) portfolio (I have no job now);
+	2) personal needs and further development;
+
+June 2009.
+
+	simpleret.googlecode.com - initial commit.
+
+Version 1.3.1. Autumn 2008.
+
+	XML output. Some light improvements.
+
+Version 1.4
+
+	Attempt to rewrite it,
+	to make it nice for the further development,
+	to make it much faster, because it is very slow,
+	(and to remove "Long" values from the database).
+
+	Stopped, because I absolutely had no time.
+	Rejected, because I have forgot the most of this code.
+
+Version 1.0 - 1.3
+
+	MySQL based version.
+	It works, produces trace in HTML and produces stack trace data for AmaterasUML.
+	Developed very fast (maybe in two weeks or similar), so it looks very ugly, very slow, ... bugs.
+	Main versions, a lot of code.
+
+History (early versions).
+
+	Started at EPAM Systems and at home in 2008 (nearly end of spring), 
+	to understand the current project at work.
+	
+	I was searching for a some kind of visual reverse engineering tool or for something that
+	looks like a debugging-based UML sequence diagram generator,
+	like in Perl, but found nothing for Java except some commercial tools.
+
+	Terminated (autumn 2008), because I've got new tasks that didn't need
+	a deep understanding of the current project at work.
