@@ -1,0 +1,37 @@
+
+1. Requirements:
+
+Note: You may try other versions of software.
+
+    * JDK (version 1.5 minimum);
+    * Eclipse (3.3);
+    * Hibernate (3.2);
+    * MySQL (5.1) or HSQLDB (for small projects);
+
+2. Put in simpleret/lib following jars:
+
+    antlr-2.7.6.jar (hibernate - in hibernate-3.2.5.ga.zip)
+    asm-attrs.jar (hibernate)
+    asm.jar (hibernate)
+    cglib-2.1.3.jar (hibernate)
+    commons-collections-2.1.1.jar (hibernate)
+    commons-logging-1.0.4.jar (hibernate)
+    dom4j-1.6.1.jar (hibernate)
+    hibernate3.jar (hibernate)
+    jta.jar (hibernate)
+    log4j-1.2.11.jar (hibernate)
+    hsqldb.jar (if you use HSQLDB)
+    mysql-connector-java-5.1.7-bin.jar (if you use MySQL, www.mysql.com)
+    junit (version 3.8, jUnit site)
+
+3. Start HSQL server.
+    cd c:\hsqldb\lib\databases
+    java -cp ..\hsqldb.jar org.hsqldb.Server -database.1 file:simpleret001 -dbname.1 simpleret
+
+4. If you use MySQL, Create MySQL case sensitive database:
+    CREATE DATABASE trace CHARACTER SET latin1 COLLATE latin1_general_cs;
+
+5. Only first start(!!!): uncomment hibernate.cfg.xml to automatically generate the database structure: 
+    <property name="hbm2ddl.auto">create</property>
+
+
