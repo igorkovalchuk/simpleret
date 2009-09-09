@@ -32,7 +32,7 @@ public class TraceFileReader1Initial extends TraceFileReaderAbstract {
 		Long threadID = Long.parseLong(values[2]);
 
 		String call = values[4].trim();
-		call = call.substring(3);
+		//call = call.substring(3);
 
 		boolean ret = false;
 		if (call.endsWith(".<<return>>()")) {
