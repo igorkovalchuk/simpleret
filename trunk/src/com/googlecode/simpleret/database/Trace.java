@@ -46,7 +46,7 @@ public class Trace {
 	 */
 	private int level = 0;
 
-	private int colourMarker = 0;
+	private Integer colourMarker = null;
 
 	// private final static String NBSP1 = Constants.NBSP;
 	// private final static String NBSP2 = Constants.NBSP + Constants.NBSP;;
@@ -91,11 +91,11 @@ public class Trace {
 		this.level = level;
 	}
 
-	public int getColourMarker() {
+	public Integer getColourMarker() {
 		return colourMarker;
 	}
 
-	public void setColourMarker(int colourMarker) {
+	public void setColourMarker(Integer colourMarker) {
 		this.colourMarker = colourMarker;
 	}
 
