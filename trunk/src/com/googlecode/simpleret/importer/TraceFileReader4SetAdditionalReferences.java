@@ -13,8 +13,6 @@ import com.googlecode.simpleret.database.Trace;
 
 /**
  * Set additional references in the database.
- * 
- * @author (c) Igor O. Kovalchuk 2008, 2009.
  */
 public class TraceFileReader4SetAdditionalReferences {
 

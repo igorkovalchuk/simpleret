@@ -14,8 +14,6 @@ import com.googlecode.simpleret.database.Vocabulary;
 
 /**
  * Reading the program trace and store it into the database.
- * 
- * @author (c) Igor O. Kovalchuk 2008, 2009.
  */
 public class TraceFileReader3StoreTrace extends TraceFileReaderAbstract {
 

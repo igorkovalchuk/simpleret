@@ -17,8 +17,6 @@ import java.util.Set;
  * 1 => com.somepackage.SomeClass.someMethod()<br> 
  * 2 => com.somepackage.SomeClass.someOtherMethod()<br>
  *  ... => ...<br>
- *  
- * @author (c) Igor O. Kovalchuk 2008, 2009.
  */
 public class VocabularyCache {
 

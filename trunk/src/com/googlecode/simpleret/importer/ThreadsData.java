@@ -6,8 +6,6 @@ import java.util.TreeSet;
 /**
  * For collect information about threads in program trace and about operations
  * (i.e. calls) in each thread.
- * 
- * @author (c) Igor O. Kovalchuk 2008, 2009.
  */
 public class ThreadsData {
 

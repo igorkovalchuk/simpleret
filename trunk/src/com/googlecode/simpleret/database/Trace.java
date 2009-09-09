@@ -4,8 +4,6 @@ package com.googlecode.simpleret.database;
 
 /**
  * Represent a line (a string) from the program trace.
- * 
- * @author (c) Igor O. Kovalchuk 2008, 2009.
  */
 public class Trace {
 

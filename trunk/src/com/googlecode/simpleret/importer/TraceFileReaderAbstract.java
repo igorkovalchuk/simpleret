@@ -8,9 +8,6 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-/**
- * @author (c) Igor O. Kovalchuk 2008, 2009.
- */
 abstract public class TraceFileReaderAbstract {
 
 	static Logger abstractLogger = 

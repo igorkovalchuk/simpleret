@@ -2,8 +2,6 @@ package com.googlecode.simpleret.database;
 
 /**
  * Represent an unique signature that taken from a program trace.
- * 
- * @author (c) Igor O. Kovalchuk 2008, 2009.
  */
 public class Vocabulary {
 

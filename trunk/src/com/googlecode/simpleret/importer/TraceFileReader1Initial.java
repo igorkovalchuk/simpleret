@@ -9,8 +9,6 @@ import java.util.Set;
  * First thing - we need to count number of calls
  * in each Thread (if there are several threads),
  * so user can later choose the only one Thread to analyze/visualize.
- * 
- * @author (c) Igor O. Kovalchuk 2008, 2009.
  */
 public class TraceFileReader1Initial extends TraceFileReaderAbstract {
 
