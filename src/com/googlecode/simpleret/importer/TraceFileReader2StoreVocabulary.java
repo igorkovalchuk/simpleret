@@ -13,8 +13,6 @@ import com.googlecode.simpleret.database.Vocabulary;
  * Now we have a thread identifier, so we can select all calls of this thread.
  * 
  * Store each Vocabulary record (i.e. type of call) into the database.
- * 
- * @author (c) Igor O. Kovalchuk 2008, 2009.
  */
 public class TraceFileReader2StoreVocabulary extends TraceFileReaderAbstract {
 

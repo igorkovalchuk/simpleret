@@ -8,9 +8,6 @@ import com.googlecode.simpleret.database.Vocabulary;
 
 import junit.framework.TestCase;
 
-/**
- * @author (c) Igor O. Kovalchuk 2008, 2009.
- */
 public class DatabaseTest extends TestCase {
 
 	private static Session session = null;

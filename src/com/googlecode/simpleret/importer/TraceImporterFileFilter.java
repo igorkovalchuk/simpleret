@@ -4,9 +4,6 @@ import java.io.File;
 
 import javax.swing.filechooser.FileFilter;
 
-/**
- * @author (c) Igor O. Kovalchuk 2008, 2009.
- */
 public class TraceImporterFileFilter extends FileFilter {
 
 	public String getDescription() {

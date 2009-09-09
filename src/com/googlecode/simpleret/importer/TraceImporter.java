@@ -24,8 +24,6 @@ import org.apache.log4j.Logger;
  * 5. Store vocabulary of calls in the database.
  * 6. Store trace in the database.
  * 7. Create additional references in the database.
- *
- * @author (c) Igor O. Kovalchuk 2008, 2009.
  */
 public class TraceImporter extends JPanel {
 

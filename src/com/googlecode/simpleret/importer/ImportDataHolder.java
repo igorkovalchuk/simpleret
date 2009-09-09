@@ -5,9 +5,6 @@ import java.util.Map;
 
 import com.googlecode.simpleret.database.VocabularyCache;
 
-/**
- * @author (c) Igor O. Kovalchuk 2008, 2009.
- */
 public class ImportDataHolder {
 
 	VocabularyCache vocabularyCache = new VocabularyCache();
