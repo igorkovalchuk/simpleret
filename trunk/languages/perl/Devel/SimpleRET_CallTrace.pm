@@ -166,7 +166,7 @@ Original version (Devel::CallTrace):
 
 Copyright 2005 Jesse Vincent <jesse@bestpractical.com>
 
-Modified (Devel::CallTrace_SimpleRET) version:
+Modified (Devel::SimpleRET_CallTrace) version:
 
 Copyright 2009 Igor O. Kovalchuk <igorko76 at GMail>
 
