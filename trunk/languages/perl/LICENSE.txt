@@ -1,0 +1,2 @@
+
+This files may be redistributed under the same terms as perl itself.
