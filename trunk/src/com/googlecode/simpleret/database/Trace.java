@@ -1,5 +1,7 @@
 package com.googlecode.simpleret.database;
 
+import com.googlecode.simpleret.viewer.Data;
+
 //import com.googlecode.simpleret.Constants;
 
 /**
@@ -113,4 +115,56 @@ public class Trace {
 		this.parentId = parentId;
 	}
 
+	public String getTextView(Data data) {
+
+		VocabularyCache vc = data.getVocabularyCache();
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("<a href=\"http://localhost?id="+this.id+"\">");
+
+		String thisIDstr = String.valueOf(id);
+		while(thisIDstr.length() < 9) {
+			thisIDstr = " " + thisIDstr;
+		}
+
+		sb.append(thisIDstr).
+		append("</a>").
+
+		append("&nbsp;").append(level);
+		for(int i = 0; i  <= level; i++) {
+			sb.append("&nbsp;&nbsp;");
+		}
+		if (this.ret) {
+			sb.append("&nbsp;&nbsp;");
+		} else {
+			sb.append("&gt;&nbsp;");
+		}
+		String call = vc.getCall(this.vocabularyId);
+		call = call.replace(">", "&gt;");
+		call = call.replace("<", "&lt;");
+
+		String c = null;
+		if (this.colourMarker != null) {
+			c = Integer.toHexString(this.colourMarker.intValue());
+			if (c.length() == 8) {
+				c = c.substring(2, 8);
+			}
+			while(c.length() < 6) {
+				c = '0' + c;
+			}
+		}
+
+		if (c != null) {
+			sb.append("<span style=\"color:#" + c + ";\">");
+		}
+
+		sb.append(call);
+
+		if (c != null) {
+			sb.append("</span>");
+		}
+
+		return sb.toString();
+	}
+	
 }

@@ -1,6 +1,8 @@
 package com.googlecode.simpleret.viewer;
 
 import java.awt.Dimension;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JEditorPane;
@@ -13,6 +15,7 @@ import org.hibernate.classic.Session;
 
 import com.googlecode.simpleret.Constants;
 import com.googlecode.simpleret.database.HibernateUtility;
+import com.googlecode.simpleret.database.Trace;
 import com.googlecode.simpleret.database.Vocabulary;
 import com.googlecode.simpleret.database.VocabularyCache;
 
@@ -28,14 +31,14 @@ public class Viewer extends JEditorPane {
 	
 	private Data data = null;
 	
-	
+	private ListOfIdentifiers identifiers = new ListOfIdentifiers();
 	
 	private Viewer(Data data) {
 		super("text/html", null);
 		
 		this.data = data;
 		
-		ViewerKeyListener keyListener = new ViewerKeyListener(data); 
+		ViewerKeyListener keyListener = new ViewerKeyListener(data, this); 
 		this.addKeyListener(keyListener);
 		
 		ViewerHyperlinkListener hyperlinkListener = new ViewerHyperlinkListener(data);
@@ -44,44 +47,62 @@ public class Viewer extends JEditorPane {
 	
 	
 	
-	private void showSelection() {
-		
+	public void showSelection() {
+		data.defineState();
 		selectionInitializeLoadData();
-		selectionLoadData();
-		
-		selectionShowData();
+		if (data.isChanged()) {
+			List<Trace> list = selectionLoadData();
+			selectionShowData(list);
+		}
+		data.resetState();
 	}
 
 	private void selectionInitializeLoadData() {
-		
-		if (data.isRefresh()) {
+		if (data.isReinitialize()) {
 			Where where = new Where();
 			where.append(DatabaseTools.createWhereClause(data));
-		
+
 			String hsql = "select count(*) from Trace " + where.toWhere();
 			Query query = data.getSession().createQuery(hsql);
 			DatabaseTools.usePlaceholders(data, query);
-		
+
 			Long count = (Long) query.uniqueResult();
 			data.setCount(count);
-			
-			data.setRefresh(false);
+
+			identifiers.initialize(data, where);
 		}
 	}
 	
-	private void selectionLoadData() {
+	private List<Trace> selectionLoadData() {
 		
+		List<Integer> list = identifiers.get(data);
+		
+		Query query = data.getSession().createQuery("from Trace trace where trace.id in (:idList)");
+		query.setParameterList("idList", list);
+		List <Trace> result = query.list();
+		return result;
 	}
 	
-	private void selectionShowData() {
+	private void selectionShowData(List<Trace> list) {
+		logger.info("Show results.");
+
 		StringBuffer content = new StringBuffer(HTML_NEW_LINE);
 		content.append("<html>").
 		append("<head></head>").
 		append("<body style=\"font-family:monospace; font-size:10px;\">").
 		append("<pre>");
-		
+
 		content.append(HTML_NEW_LINE).append(HTML_NEW_LINE);
-		
+
+		Iterator<Trace> i = list.iterator();
+		while (i.hasNext()) {
+			Trace trace = i.next();
+			content.append( trace.getTextView(data) ) . 
+				append(HTML_NEW_LINE);
+		}
+
+		content.append(HTML_NEW_LINE);
+
 		content.append("</pre></body></html>");
 		this.setText(content.toString());
 	}
