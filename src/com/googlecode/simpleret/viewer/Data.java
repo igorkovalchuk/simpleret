@@ -21,20 +21,32 @@ public class Data {
 	private Map<Integer, Integer> currentId2parentId = new HashMap<Integer, Integer>();
 	private Set<Integer> currentIdIsReturn = new HashSet<Integer>();
 	
-	private boolean displayColouredOnly = false;
-	
-	/**
-	 * Number of selected records (in database).
-	 */
 	private long count = 0;
 	
 	/**
-	 * Usually we:<br>
-	 * 1) initialize (get SQL count());<br>
-	 * 2) loading data;<br>
-	 * So, if we need to reinitialize - set refresh = true.
+	 * Re-initialize flag (get SQL count()).
 	 */
-	private boolean refresh = true;
+	private boolean reinitialize = true;
+	
+	/**
+	 * Re-loading data flag (show a new page).
+	 */
+	private boolean changed = true;
+	
+	/**
+	 * Current page.
+	 */
+	private int page = 1;
+	private int pagePrevious = 1;
+	
+	/**
+	 * Number of pages (in database).
+	 */
+	private int pages = 1; 
+	
+	private boolean displayColouredOnly = false;
+	private boolean displayColouredOnlyPrevious = true; // for 1-st init.!!!;
+
 	
 	public Session getSession() {
 		return session;
@@ -84,12 +96,65 @@ public class Data {
 		this.count = count;
 	}
 
-	public boolean isRefresh() {
-		return refresh;
+	/**
+	 * We shell know about 
+	 * isReinitialize and
+	 * isChanged.
+	 */
+	public void defineState() {
+		reinitialize = false;
+		changed = false;
+		if (page != pagePrevious) {
+			changed = true;
+		}
+		if (displayColouredOnly != displayColouredOnlyPrevious) {
+			reinitialize = true;
+			changed = true;
+		}
 	}
 
-	public void setRefresh(boolean refresh) {
-		this.refresh = refresh;
+	public void resetState() {
+		pagePrevious = page;
+		displayColouredOnlyPrevious = displayColouredOnly;
+		reinitialize = false;
+		changed = false;
+	}
+
+	public boolean isChanged() {
+		return changed;
+	}
+
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
+
+	public boolean isReinitialize() {
+		return reinitialize;
+	}
+
+	public void setReinitialize(boolean reinitialize) {
+		this.reinitialize = reinitialize;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		if (page > pages) {
+			page = pages;
+		} else if (page < 1) {
+			page = 1;
+		}
+		this.page = page;
+	}
+
+	public int getPages() {
+		return pages;
+	}
+
+	public void setPages(int pages) {
+		this.pages = pages;
 	}
 	
 }

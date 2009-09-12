@@ -8,9 +8,11 @@ import com.googlecode.simpleret.Constants;
 class ViewerKeyListener implements KeyListener {
 	
 	Data data = null;
+	Viewer viewer = null;
 	
-	ViewerKeyListener(Data data) {
+	ViewerKeyListener(Data data, Viewer viewer) {
 		this.data = data;
+		this.viewer = viewer;
 	}
 	
 	public void keyTyped(KeyEvent event) {
@@ -48,12 +50,15 @@ class ViewerKeyListener implements KeyListener {
 		if (key == 'r') {
 			difference = - Constants.PAGE_LENGTH * 100;
 		}
-		
+
+		data.setPage(data.getPage() + difference);
+
 		// Other.
-		
-		
+
+		// Display.
+		viewer.showSelection();
 	}
-	
+
 	public void keyPressed(KeyEvent e) {
 	}
 	
