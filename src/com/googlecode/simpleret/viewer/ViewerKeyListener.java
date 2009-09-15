@@ -21,8 +21,7 @@ class ViewerKeyListener implements KeyListener {
 		
 		int difference = 0;
 		
-		// Forward.
-		
+		// Forward scroll.
 		if (key == 'a') {
 			difference = 1;
 		}
@@ -36,8 +35,7 @@ class ViewerKeyListener implements KeyListener {
 			difference = Constants.PAGE_LENGTH * 100;
 		}
 		
-		// Backward.
-		
+		// Backward scroll.
 		if (key == 'q') {
 			difference = - 1;
 		}
@@ -50,13 +48,44 @@ class ViewerKeyListener implements KeyListener {
 		if (key == 'r') {
 			difference = - Constants.PAGE_LENGTH * 100;
 		}
-
-		data.setPage(data.getPage() + difference);
-
-		// Other.
-
-		// Display.
-		viewer.showSelection();
+		
+		if (difference != 0) {
+			data.setPointer(data.getPointer() + difference);
+			viewer.showSelection(); // Display;
+			return;
+		}
+		
+		// Change the deepness.
+		if (key == 'l') {
+			( new FrameInputLevel() ).input(data, viewer);
+			return;
+		}
+		
+		// Show the Instrumental Panel.
+		if (key == '9') {
+			( new FrameInstruments() ).show(data, viewer);
+			return;
+		}
+		
+		// Prepare a filter.
+		if (key == '1' || key == '2' || key == '3') {
+			data.getSignatures().showList(data, String.valueOf(key));
+			return;
+		}
+		
+		// Show only coloured/uncoloured content;
+		if (key == 'z') {
+			data.changeDisplayColouredOnly();
+			viewer.showSelection(); // Display;
+			return;
+		}
+		
+		if (key == 'u') { // AmaterasUML
+		}
+		
+		if (key == 'h') { // HTML export
+		}
+		
 	}
 
 	public void keyPressed(KeyEvent e) {

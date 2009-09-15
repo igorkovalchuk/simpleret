@@ -7,6 +7,8 @@ import javax.swing.event.HyperlinkListener;
 
 import org.apache.log4j.Logger;
 
+import com.googlecode.simpleret.database.Trace;
+
 public class ViewerHyperlinkListener implements HyperlinkListener {
 
 	static Logger logger = Logger.getLogger(ViewerHyperlinkListener.class);
@@ -32,13 +34,15 @@ public class ViewerHyperlinkListener implements HyperlinkListener {
 			if (! values[0].equals("id"))
 				return;
 
-			// String traceId = values[1];
+			int traceId = Integer.valueOf(values[1]);
 
-			// Trace trace = dataHolder.findTraceById(Integer.parseLong(traceId));
-			// if (trace == null)
-				// return;
-
-			// data.takenColourMarker =  trace.getColourMarker();
+			Trace trace = data.findTraceById(traceId);
+			if (trace == null) {
+				logger.warn("Can't find an object of Trace.");
+				return;
+			}
+			logger.debug("Taken Colour = " + trace.getColourMarker());
+			data.setTakenColour(trace.getColourMarker());
 		}
 		
 	}

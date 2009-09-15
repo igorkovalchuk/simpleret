@@ -1,7 +1,7 @@
 package com.googlecode.simpleret.viewer;
 
 import java.awt.Dimension;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,8 +24,6 @@ public class Viewer extends JEditorPane {
 	private static final long serialVersionUID = -1;
 
 	static Logger logger = Logger.getLogger(Viewer.class);
-
-	private static String TITLE = "Simple Reverse Engineering Tool - Viewer";
 	
 	public final static String HTML_NEW_LINE = "<br>";
 	
@@ -60,14 +58,17 @@ public class Viewer extends JEditorPane {
 	private void selectionInitializeLoadData() {
 		if (data.isReinitialize()) {
 			Where where = new Where();
-			where.append(DatabaseTools.createWhereClause(data));
+			where.createBaseClause(data);
 
-			String hsql = "select count(*) from Trace " + where.toWhere();
+			String hsql = "select count(*) from Trace trace" + where.toWhere();
 			Query query = data.getSession().createQuery(hsql);
-			DatabaseTools.usePlaceholders(data, query);
+			where.usePlaceholders(query);
 
 			Long count = (Long) query.uniqueResult();
-			data.setCount(count);
+			if (count > Integer.MAX_VALUE) {
+				throw new RuntimeException();
+			}
+			data.setCount(count.intValue());
 
 			identifiers.initialize(data, where);
 		}
@@ -77,9 +78,19 @@ public class Viewer extends JEditorPane {
 		
 		List<Integer> list = identifiers.get(data);
 		
-		Query query = data.getSession().createQuery("from Trace trace where trace.id in (:idList)");
+		data.setLastIdentifier(list);
+		
+		List <Trace> result = new ArrayList<Trace>();
+		if (list.size() == 0) {
+			return result;
+		}
+		
+		Query query = data.getSession().createQuery("from Trace trace where trace.id in (:idList) order by trace.id");
 		query.setParameterList("idList", list);
-		List <Trace> result = query.list();
+		result = query.list();
+
+		data.setLoadedList(result);
+
 		return result;
 	}
 	
@@ -94,11 +105,30 @@ public class Viewer extends JEditorPane {
 
 		content.append(HTML_NEW_LINE).append(HTML_NEW_LINE);
 
+		int number = 0;
 		Iterator<Trace> i = list.iterator();
 		while (i.hasNext()) {
 			Trace trace = i.next();
 			content.append( trace.getTextView(data) ) . 
 				append(HTML_NEW_LINE);
+			number++;
+		}
+
+		while (number < (Constants.PAGE_LENGTH) ) {
+			content.append(HTML_NEW_LINE);
+			number++;
+		}
+		
+		content.append(HTML_NEW_LINE);
+		
+		if (data.getCount() > 0) {
+			content.append(data.getPercent() + "%");
+			content.append(" pointer/all: " + ( data.getPointer() + 1 ) + "/" + data.getCount() );
+		}
+
+		content.append(" level: " + data.getLevel());
+		if (data.isDisplayColouredOnly()) {
+			content.append(" (*)");
 		}
 
 		content.append(HTML_NEW_LINE);
@@ -115,7 +145,7 @@ public class Viewer extends JEditorPane {
 			throw new RuntimeException("Software error. No input parameter.");
 		}
 		
-		JFrame frame = new JFrame(TITLE);
+		JFrame frame = new JFrame(Constants.TITLE_VIEWER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Viewer viewer = new Viewer(initialData);
