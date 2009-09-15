@@ -1,0 +1,15 @@
+
+Keys:
+
+q,w,e,r - scrolling backward
+a,s,d,f - scrolling forward
+
+z - show only colourised records
+
+1,2,3 - prepare a list of signatures to filter;
+every signature looks like com.package.method
+or like a Java regular expression ^.*method.*$
+
+9 - Instrumental window
+
+l - change the current deepness (level) of view
