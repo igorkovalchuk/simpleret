@@ -147,4 +147,33 @@ public class VocabularyCache {
 		return identifiers;
 	}
 
+	/**
+	 * @param list
+	 * 			a list of signatures.
+	 * @return 	a list of vocabulary identifiers.
+	 */
+	public List<Integer> getVocabularyList(Set<String> list) {
+		
+		List<Integer> ids = new ArrayList<Integer>();
+		
+		if (list == null || list.size() == 0) {
+			return ids;
+		}
+		
+		Iterator<String> i = list.iterator();
+		
+		Set<Integer> already = new HashSet<Integer>();
+		
+		while(i.hasNext()) {
+			String call = i.next();
+			Integer id = this.getID(call);
+			if (already.contains(id)) {
+				continue;
+			}
+			if (id != null)
+				ids.add(id);
+		}
+		return ids;
+	}
+
 }
