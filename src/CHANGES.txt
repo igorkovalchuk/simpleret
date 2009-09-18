@@ -1,4 +1,21 @@
 
+September 18
+
+	Most of the code have been rewritten.
+	Good scrolling and navigation.
+	Filtering by level and range.
+	Colourisation faster than before.
+	Nice instrumental window (previous was very ugly).
+
+	Todo:
+	- AmaterasUML export;
+	- HTML export;
+	- JPDA trace recorder;
+	- complete Perl trace recorder (CGI mode);
+	- interface (trace importing);
+	- database dialog;
+	- Method overloading (different functions with the same);
+	
 Version 1.5.0. September 2009.
 
 	New start.

@@ -67,6 +67,11 @@ class ViewerKeyListener implements KeyListener {
 			return;
 		}
 		
+		if (key == '8') {
+			( new FrameInputRange() ).input(data, viewer);
+			return;
+		}
+		
 		// Prepare a filter.
 		if (key == '1' || key == '2' || key == '3') {
 			data.getSignatures().showList(data, String.valueOf(key));
@@ -76,6 +81,13 @@ class ViewerKeyListener implements KeyListener {
 		// Show only coloured/uncoloured content;
 		if (key == 'z') {
 			data.changeDisplayColouredOnly();
+			viewer.showSelection(); // Display;
+			return;
+		}
+		
+		// Show data only in a specified range of identifiers;
+		if (key == 'x') {
+			data.changeDisplayRange();
 			viewer.showSelection(); // Display;
 			return;
 		}
