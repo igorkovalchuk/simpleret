@@ -52,7 +52,10 @@ public class Data {
 	
 	private boolean displayColouredOnly = false;
 	private boolean displayColouredOnlyPrevious = true; // for 1-st init.!!!;
-
+	
+	private boolean displayRange = false;
+	private boolean displayRangePrevious = false;	
+	
 	private int level = 0;
 	private int levelPrevious = 0;
 	
@@ -61,6 +64,9 @@ public class Data {
 	private Integer takenColour = null;
 	
 	private List<Trace> loadedList = null;
+	
+	private Integer rangeTo = null;
+	private Integer rangeFrom = null;
 	
 	public Session getSession() {
 		return session;
@@ -123,7 +129,7 @@ public class Data {
 		}
 		if ( (displayColouredOnly != displayColouredOnlyPrevious) ||
 			(level != levelPrevious) ||
-			(displayColouredOnly != displayColouredOnlyPrevious)
+			(displayRange != displayRangePrevious)
 		) {
 			reinitialize = true;
 			changed = true;
@@ -133,6 +139,7 @@ public class Data {
 	public void resetState() {
 		pointerPrevious = pointer;
 		displayColouredOnlyPrevious = displayColouredOnly;
+		displayRangePrevious = displayRange;
 		levelPrevious = level;
 		reinitialize = false;
 		changed = false;
@@ -283,6 +290,59 @@ public class Data {
 		result.add(parentID);
 		result.addAll(findParents(parentID));
 		return result;
+	}
+
+	public void correctRange() {
+		Integer tmp;
+		if ( (rangeFrom != null) && (rangeTo != null) ) {
+			if (rangeFrom > rangeTo) {
+				tmp = rangeTo;
+				rangeTo = rangeFrom;
+				rangeFrom = tmp;
+			}
+		}
+	}
+
+	public boolean isRangeDefined() {
+		if ( (rangeFrom != null) || (rangeTo != null) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public Integer getRangeTo() {
+		return rangeTo;
+	}
+
+	public void setRangeTo(Integer rangeTo) {
+		this.rangeTo = rangeTo;
+	}
+
+	public Integer getRangeFrom() {
+		return rangeFrom;
+	}
+
+	public void setRangeFrom(Integer rangeFrom) {
+		this.rangeFrom = rangeFrom;
+	}
+
+	public boolean isDisplayRange() {
+		return displayRange;
+	}
+
+	public void setDisplayRange(boolean displayRange) {
+		this.displayRange = displayRange;
+	}
+	
+	public void changeDisplayRange() {
+		if (displayRange == false) {
+			if (isRangeDefined()) {
+				displayRange = true;
+			}
+		} else {
+			displayRange = false;
+		}
 	}
 
 }

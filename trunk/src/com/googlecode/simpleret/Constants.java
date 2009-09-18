@@ -14,4 +14,7 @@ public class Constants {
 	
 	public final static String TITLE_VIEWER = "Simple Reverse Engineering Tool - Viewer";
 	public final static String TITLE_INSTRUMENTS = "Simple Reverse Engineering Tool - Instruments";
+	public final static String TITLE_RANGE = "Input a range of identifiers to display.";
+	
+	public final static int SQL_CAPACITY = 200;
 }

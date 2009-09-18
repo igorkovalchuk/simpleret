@@ -13,6 +13,8 @@ public class Where {
 	public final static String PLACEHOLDER_LEVEL = "aLevel";
 	public final static String PLACEHOLDER_START_ID = "aStartID";
 	public final static String PLACEHOLDER_END_ID = "aEndID";
+	public final static String PLACEHOLDER_FROM_ID = "aFromID";
+	public final static String PLACEHOLDER_TO_ID = "aToID";
 	public final static String PLACEHOLDER_COLOUR = "aColour";
 	public final static String PLACEHOLDER_WORD_ID = "aWord";
 
@@ -29,7 +31,18 @@ public class Where {
 			this.addClause("level <= :" + PLACEHOLDER_LEVEL);
 			this.addPlaceholder(PLACEHOLDER_LEVEL, data.getLevel());
 		}
-		
+
+		if (data.isDisplayRange()) {
+			if ((data.getRangeFrom() != null) && (data.getRangeFrom().intValue() != 0 )) {
+				this.addClause("id >= :" + PLACEHOLDER_FROM_ID);
+				this.addPlaceholder(PLACEHOLDER_FROM_ID, data.getRangeFrom());
+			}
+			if ((data.getRangeTo() != null) && (data.getRangeTo().intValue() != 0 )) {
+				this.addClause("id <= :" + PLACEHOLDER_TO_ID);
+				this.addPlaceholder(PLACEHOLDER_TO_ID, data.getRangeTo());
+			}
+		}
+
 		return where.toString();
 	}
 
@@ -76,6 +89,14 @@ public class Where {
 		if (placeholders.containsKey(PLACEHOLDER_END_ID)) {
 			Integer id = (Integer) placeholders.get(PLACEHOLDER_END_ID);
 			query.setInteger(PLACEHOLDER_END_ID, id);
+		}
+		if (placeholders.containsKey(PLACEHOLDER_FROM_ID)) {
+			Integer id = (Integer) placeholders.get(PLACEHOLDER_FROM_ID);
+			query.setInteger(PLACEHOLDER_FROM_ID, id);
+		}
+		if (placeholders.containsKey(PLACEHOLDER_TO_ID)) {
+			Integer id = (Integer) placeholders.get(PLACEHOLDER_TO_ID);
+			query.setInteger(PLACEHOLDER_TO_ID, id);
 		}
 		if (placeholders.containsKey(PLACEHOLDER_COLOUR)) {
 			Integer colour = (Integer) placeholders.get(PLACEHOLDER_COLOUR);

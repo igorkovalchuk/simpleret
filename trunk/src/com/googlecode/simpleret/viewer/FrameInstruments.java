@@ -16,6 +16,8 @@ import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JWindow;
 
 import org.apache.log4j.Logger;
 
@@ -88,8 +90,36 @@ public class FrameInstruments {
 		});
 		
 		JButton cleanJB = new JButton("Clean colour");
+		cleanJB.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				Color colour = JColorChooser.showDialog(
+						frame, "Colours", data.getTakenColourAsColour());
+				if (colour == null) {
+					logger.warn("A colour have not been selected.");
+					return;
+				}
+				TraceMarker marker = new TraceMarker(
+					data, null, null, colour);
+				marker.colourReset();
+				frame.dispose();
+			}
+		});
 		
 		JButton cleanAllJB = new JButton("Clean all");
+		cleanAllJB.addActionListener( new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				int result = JOptionPane.showConfirmDialog(frame,
+						"Clean all colours ?", "",
+						JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+				if (result == JOptionPane.OK_OPTION) {
+					TraceMarker marker = new TraceMarker(
+							data, null, null, null);
+					marker.allColoursReset();
+					frame.dispose();
+				}
+			}
+		});
+		
 		
 		JLabel signaturesJL = new JLabel("Signatures:");
 		final JComboBox signaturesJCB = new JComboBox(signatures);

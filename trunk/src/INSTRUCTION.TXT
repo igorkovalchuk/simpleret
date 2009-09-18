@@ -7,9 +7,16 @@ a,s,d,f - scrolling forward
 z - show only colourised records
 
 1,2,3 - prepare a list of signatures to filter;
-every signature looks like com.package.method
+every signature looks like com.package.class.method
+or com.package.class
 or like a Java regular expression ^.*method.*$
 
 9 - Instrumental window
 
 l - change the current deepness (level) of view
+
+8 - input a range of identifiers to show
+x - display that range;
+
+Click on link (number/id) to use the current colour
+of that line for "Clean colour".

@@ -102,6 +102,7 @@ public class ListOfSignatures {
 		frame.setLayout(new FlowLayout());
 
 		final JTextArea area = new JTextArea();
+		area.setEditable(false);
 		area.setText(listToShow.toString());
 		area.setColumns(80);
 		area.setRows(15);
