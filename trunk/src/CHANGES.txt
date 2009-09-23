@@ -1,4 +1,7 @@
 
+September 23
+	JPDA trace recorder - development is in progress.
+
 September 18
 
 	Most of the code have been rewritten.
@@ -14,7 +17,7 @@ September 18
 	- complete Perl trace recorder (CGI mode);
 	- interface (trace importing);
 	- database dialog;
-	- Method overloading (different functions with the same);
+	- Method overloading (different functions with the same name);
 	
 Version 1.5.0. September 2009.
 
