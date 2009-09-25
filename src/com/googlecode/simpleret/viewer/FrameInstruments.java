@@ -17,7 +17,6 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JWindow;
 
 import org.apache.log4j.Logger;
 

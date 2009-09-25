@@ -54,126 +54,9 @@ public class TraceMarker {
 			wordId = i.next();
 			colouriseWordOptimised(wordId);
 		}
-		
-		// data.getSession().flush();
-		// data.getSession().clear();
 	}
 	
-	private void colouriseWord(Integer wordId) {
-		
-		logger.debug("word id = " + wordId);
-		
-		if (wordId == null) {
-			logger.warn("Word identifier is null.");
-			return;
-		}
-		Where where = new Where();
-		where.addClause("vocabularyId = :" + Where.PLACEHOLDER_WORD_ID);
-		where.addPlaceholder(Where.PLACEHOLDER_WORD_ID, wordId);
-		where.addClause("ret = false");
-				
-		String hsql = "from Trace " + where.toWhere();
-		
-		Query query = data.getSession().createQuery(hsql);
-		where.usePlaceholders(query);
-		List<Trace> list = query.list();
-		
-		// Now we have all trace objects for that word identifier (from the whole trace).
-		
-		Iterator<Trace> i = list.iterator();
-		int size = list.size(); 
-		int ready = 1;
-		// List that belongs to the current word identifier and return = false;
-		while(i.hasNext()) {
-			Trace trace1 = i.next();
-			Integer startID = trace1.getId();
-			Integer endID = data.getCurrentId2endId().get(startID);
-			colouriseByRange(startID, endID);
-			logger.debug("Updated " + ready + "/" + size + " of words.");
-			ready++;
-		}
-		
-		done();
-		//data.getSession().getTransaction().commit();
-		//data.setSession( HibernateUtility.getSessionFactory().getCurrentSession() );
-		//data.getSession().beginTransaction();
-	}
 	
-	private void colouriseByRange(Integer startId, Integer endId) {
-
-		logger.debug("range = " + startId + " - " + endId);
-		
-		boolean includeItself = filter.isItself();
-		boolean includeSubelements = filter.isSubelements();
-		boolean includeParents = filter.isParents();
-		
-		if (includeParents) {
-			includeItself = true;
-		}
-		
-		if (! includeItself) {
-			if ( (startId+1) == endId) {
-				return;
-			}
-		}
-		
-		String hsql = null;
-
-		Where where = new Where();
-		hsql = "update Trace set colourMarker = :" + Where.PLACEHOLDER_COLOUR; 
-
-		if (includeItself) {
-			if (includeSubelements) {
-				where.addClause("id >= :" + Where.PLACEHOLDER_START_ID);
-				if (endId != null) {
-					where.addClause("id <= :" + Where.PLACEHOLDER_END_ID);
-				}
-			} else {
-				where.addClause("id = :" + Where.PLACEHOLDER_START_ID);
-				if (endId != null) {
-					where.addClauseOR("id = :" + Where.PLACEHOLDER_END_ID);
-				}
-			}
-		} else {
-			if (includeSubelements) {
-				where.addClause("id > :" + Where.PLACEHOLDER_START_ID);
-				if (endId != null) {
-					where.addClause("id < :" + Where.PLACEHOLDER_END_ID);
-				}
-			}
-		}
-		
-		where.addPlaceholder(Where.PLACEHOLDER_COLOUR, colour);
-		where.addPlaceholder(Where.PLACEHOLDER_START_ID, startId);
-		if (endId != null)
-			where.addPlaceholder(Where.PLACEHOLDER_END_ID, endId);
-		
-		hsql = hsql + where.toWhere();
-		
-		Query query = data.getSession().createQuery(hsql);
-		where.usePlaceholders(query);
-		
-		int result = query.executeUpdate();
-		
-		if (includeParents) {
-			Set<Integer> parentsSet = data.findParents(startId);
-			parentsSet.addAll(data.findParents(endId));
-			parentsSet.removeAll(alreadySet);
-			if (parentsSet.size() > 0) {
-				alreadySet.addAll(parentsSet);
-				hsql = "update Trace set colourMarker = :p1 where id in (:p2)";
-				query = data.getSession().createQuery(hsql);
-				query.setInteger("p1", colour);
-				query.setParameterList("p2", parentsSet);
-				result = query.executeUpdate();
-			}
-		}
-		
-		//data.getSession().getTransaction().commit();
-		//data.setSession( HibernateUtility.getSessionFactory().getCurrentSession() );
-		//data.getSession().beginTransaction();
-	}
-
 	private void colouriseWordOptimised(Integer wordId) {
 		
 		logger.debug("word id = " + wordId);
@@ -261,10 +144,6 @@ public class TraceMarker {
 		}
 
 		done();
-		//data.getSession().getTransaction().commit();
-		//data.setSession( HibernateUtility.getSessionFactory().getCurrentSession() );
-		//data.getSession().beginTransaction();
-
 	}
 	
 	
@@ -357,9 +236,6 @@ public class TraceMarker {
 		data.getSession().getTransaction().commit();
 		data.setSession( HibernateUtility.getSessionFactory().getCurrentSession() );
 		data.getSession().beginTransaction();
-		
-		//data.getSession().flush();
-		//data.getSession().clear();
 	}
 
 }

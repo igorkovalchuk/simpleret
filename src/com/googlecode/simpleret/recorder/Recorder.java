@@ -1,8 +1,10 @@
 package com.googlecode.simpleret.recorder;
 
+import java.io.IOException;
+
 public class Recorder {
 
-	private static Configuration configuration = new Configuration();
+	private static Configuration configuration;
 
 	private static final long REINITIALIZE = 10000L; // 60000 = 1 min
 
@@ -17,19 +19,23 @@ public class Recorder {
 	// number of record;
 	private long record = 0;
 
-	synchronized public void traceEntry(Signature signature) {
-		threadData = configuration.getThreadData(signature.getThreadID());
-		threadData.increaseCallDepth();
-		trace(signature);
+	public Recorder(Configuration configuration) {
+		Recorder.configuration = configuration;
+	}
+	
+	synchronized public void trace(Signature signature) {
+		if (signature.isEntry()) {
+			threadData = configuration.getThreadData(signature.getThreadID());
+			threadData.increaseCallDepth();
+			tracing(signature);
+		} else {
+			threadData = configuration.getThreadData(signature.getThreadID());
+			tracing(signature);
+			threadData.decreaseCallDepth();
+		}
 	}
 
-	synchronized public void traceExit(Signature signature) {
-		threadData = configuration.getThreadData(signature.getThreadID());
-		trace(signature);
-		threadData.decreaseCallDepth();
-	}
-
-	private void trace(Signature signature) {
+	private void tracing(Signature signature) {
 
 		long now = System.currentTimeMillis();
 		if ((now - time) > REINITIALIZE) {
@@ -38,11 +44,11 @@ public class Recorder {
 			configuration.initialize();
 		}
 
-		if (configuration.isEnabled()) {
+		if ( ! configuration.isEnabled()) {
 			return;
 		}
 
-		if (configuration.isFiltering() && threadData.isFiltering()) {
+		if (threadData.isFiltering()) {
 			if (threadData.isEndOfFiltering(signature)) {
 				threadData.resetFiltering();
 				return;
@@ -52,16 +58,14 @@ public class Recorder {
 			}
 		}
 
-		StringBuffer result = new StringBuffer("");
-
-		if (configuration.isFiltering()) {
-			if (configuration.contains(signature)) {
-				threadData.setFiltering(signature);
-			}
+		if (configuration.contains(signature)) {
+			threadData.setFiltering(signature);
 			return;
 		}
 
 		// Create a trace record;
+
+		StringBuffer result = new StringBuffer("");
 
 		long currentTime = (System.currentTimeMillis() / DELTHA_TIME)
 				- INITIAL_TIME;
@@ -69,7 +73,7 @@ public class Recorder {
 		record++;
 
 		int cd = threadData.getCallDepth();
-
+		
 		result.append(record).append('	').append(cd).append('	').append(
 				threadData.getId()).append('	').append(currentTime).append('	');
 
@@ -88,8 +92,23 @@ public class Recorder {
 		} else {
 			result.append(signature.getMethodName());
 		}
-		result.append("()");
+		result.append("()").append("\n");
 		
+		if (configuration.isScreen()) {
+			System.out.print(result);
+		}
+
+		try {
+			configuration.getFileWriter().write(result.toString());
+			configuration.getFileWriter().flush();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+
+	}
+
+	public static Configuration getConfiguration() {
+		return configuration;
 	}
 
 }

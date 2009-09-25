@@ -11,11 +11,14 @@ public class Signature {
 	// method entry/exit;
 	private boolean isEntry = true;
 	
-	Signature(String signature, boolean isEntry) {
-		this.signature = signature;
+	public Signature(String clazz, String method, Long threadID, boolean isEntry) {
+		this.className = clazz;
+		this.methodName = method;
+		this.signature = className + '.' + methodName;
+		this.threadID = threadID;
 		this.isEntry = isEntry;
 	}
-	
+		
 	boolean isEntry() {
 		return isEntry;
 	}
