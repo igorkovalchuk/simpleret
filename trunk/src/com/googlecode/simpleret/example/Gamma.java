@@ -9,11 +9,16 @@ public class Gamma {
 	
 	public void inside1() {
 		System.out.println("... in Gamma inside1");
-		inside2();
+		try {
+			inside2();
+		} catch (Exception e) {
+			System.out.println("... catch Exception in Gamma inside1");
+		}
 	}
 
-	public void inside2() {
+	public void inside2() throws Exception{
 		System.out.println("... in Gamma inside2");
+		//throw new Exception("test1");
 	}
 
 }

@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -14,17 +13,27 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
+import com.googlecode.simpleret.Utilities;
 import com.googlecode.simpleret.recorder.ThreadData;
+
 
 public class Configuration {
 
+	static Logger logger = Logger.getLogger(Configuration.class);
+	
 	private boolean enabled = false;
 
 	private boolean screen = false;
-
-	private boolean filtering = false;
 	
+	// include only these signatures;
+	private Set<String> initial;
+	
+	// signatures to exclude;
 	private Set<String> signatures;
+	
+	// signatures to exclude;
 	private Set<String> signaturesRe;
 
 	/**
@@ -34,18 +43,25 @@ public class Configuration {
 
 	private Map<Long, ThreadData> threads = new HashMap<Long, ThreadData>();
 
-	private String base = "c:/Projects/";
-	private File inputFile = new File(base + "trace.cfg.test.txt");
-	private File outputFile = new File(base + "trace.out.test.txt");
+	private String base = null;
+	private File inputFile;
+	
+	private String outputFileName = null;
+	private File outputFile;
+
 	private BufferedWriter fileWriter = null;
 
 	// last modification time of configuration file.
-	private long modificationTime = 0;
+	private long modificationTime = -1;
 
 	public Configuration() {
-
+		this.base = Utilities.getApplicationDataPath();
 	}
 
+	public void setInputFile(String path) {
+		inputFile = new File(base + path);
+	}
+		
 	public void initialize() {
 
 		synchronized (Configuration.class) {
@@ -57,95 +73,110 @@ public class Configuration {
 				}
 				modificationTime = lastModified;
 
+				logger.debug("initialization");
+
 				BufferedReader in = new BufferedReader(
 						new FileReader(inputFile));
 
 				String string;
 
+				initial = new HashSet<String>();
 				signatures = new HashSet<String>();
 				signaturesRe = new HashSet<String>();
+				
 				modes = new HashSet<String>();
 
 				while ((string = in.readLine()) != null) {
 					string = string.trim();
+					
+					//logger.debug("reading [" + string + "]");
+					
 					if (string.startsWith("#")) {
 						// COMMENTS;
 						continue; // go to the next string;
 					} else if (string.startsWith("[")) {
 						// A CONFIGURATION [key]:value
 						String[] parameters = string.split(":");
-						//String value = "";
+						String value = "";
 						if (parameters.length > 1) {
 							string = parameters[0].trim();
-							//value = parameters[1].trim();
+							value = parameters[1].trim();
 						}
-						modes.add(string);
+						if ("".equals(value)) {
+							// Some mode;
+							modes.add(string);
+						} else {
+							// Some value;
+							if ("[include]".equals(string)) {
+								initial.add(value);
+								logger.debug("include [" + value + "]");
+							} else if ("[file]".equals(string)) {
+								
+								if (! value.equals(outputFileName)) {
+									logger.debug("file [" + value + "]");
+									this.closeFile();
+									outputFileName = value;
+									outputFile = new File(base + value);
+									this.openFile();
+								}
+								
+							}
+						}
 
-						if (string.equals("[disabled]")) {
+						if (string.equals("[stop]")) {
 							break;
 						}
 
 					} else if (string.startsWith("^")) {
 						// A REGULAR EXPRESSION;
 						signaturesRe.add(string);
+						logger.debug("signature RE [" + string + "]");
 					} else {
 						if (!string.equals("")) {
 							signatures.add(string);
+							logger.debug("signature [" + string + "]");
 						}
 					}
 				}
 
 				in.close();
 
-				if (modes.contains("[disabled]")) {
+				if (signatures.size() == 0) {
+					signatures = null;
+				}
+				
+				if (signaturesRe.size() == 0) {
+					signaturesRe = null;
+				}
+				
+				if (modes.contains("[enabled]")) {
+					if (! enabled) {
+						logger.info("Trace recording has been enabled.");
+
+						this.openFile();
+
+						fileWriter.write("# {enabled}{"
+								+ (new Date()).toString() + "}");
+						fileWriter.newLine();
+						fileWriter.flush();
+						enabled = true;
+					}
+				} else {
 					if (enabled) {
-						System.out.println("Trace recording has been enabled.");
-						fileWriter.write("# {disabled}{"
+						logger.info("Trace recording has been disabled.");
+						fileWriter.write("{# disabled}{"
 								+ (new Date()).toString() + "}");
 						fileWriter.newLine();
 						fileWriter.flush();
-						fileWriter.close();
-						fileWriter = null;
+						this.closeFile();
+						enabled = false;
 					}
-					enabled = false;
 					return;
-				} else {
-					if (!enabled) {
-						System.out
-								.println("Trace recording has been disabled.");
-						try {
-							// Create a new file, or use existing;
-							if (!outputFile.exists()) {
-								outputFile.createNewFile();
-							}
-							fileWriter = new BufferedWriter(new FileWriter(
-									outputFile, true));
-						} catch (IOException e) {
-							throw new RuntimeException(e);
-						}
-						fileWriter.write("{# enabled}{"
-								+ (new Date()).toString() + "}");
-						fileWriter.newLine();
-						fileWriter.flush();
-					}
-					enabled = true;
 				}
 				
-				if (modes.contains("[filter]")) {
-					filtering = true;
-				} else {
-					filtering = false; // default
-					Collection<ThreadData> set = threads.values();
-					Iterator<ThreadData> it = set.iterator();
-					while (it.hasNext()) {
-						ThreadData td = (ThreadData) it.next();
-						// ignore the filtering, if configuration has been changed;
-						td.resetFiltering();
-					}
-				}
-				
-				if (modes.contains("[screen]")) {
+				if (modes.contains("[display]")) {
 					screen = true;
+					logger.debug("Display tracing.");
 				} else {
 					screen = false;
 				}
@@ -171,10 +202,6 @@ public class Configuration {
 		return enabled;
 	}
 
-	public boolean isFiltering() {
-		return filtering;
-	}
-
 	public boolean isScreen() {
 		return screen;
 	}
@@ -190,30 +217,69 @@ public class Configuration {
 	public boolean contains (Signature signature) {
 		String name = signature.getStamp();
 		
-		if (signatures.contains(name)) {
-			return true;
-		}
-		
-		Iterator<String> iterator = signatures.iterator();
-		
+		Iterator<String> iterator;
 		String mask;
-
-		while (iterator.hasNext()) {
-			mask = (String) iterator.next();
-			if (name.startsWith(mask)) {				
-				return true;
-			}
-		}
-
-		iterator = signaturesRe.iterator();
-		while (iterator.hasNext()) {
-			mask = iterator.next();
-			if (name.matches(mask)) {
-				return true;
-			}
-		}
 		
+		if (signatures != null) { 
+
+			if ( signatures.contains(name)) {
+				return true;
+			}
+
+			iterator = signatures.iterator();
+
+			while (iterator.hasNext()) {
+				mask = (String) iterator.next();
+				if (name.startsWith(mask)) {				
+					return true;
+				}
+			}
+
+		}
+
+		if (signaturesRe != null) {
+			iterator = signaturesRe.iterator();
+			while (iterator.hasNext()) {
+				mask = iterator.next();
+				if (name.matches(mask)) {
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
+
+	private void openFile() {
+		try {
+			// Create a new file, or use existing;
+			if (!outputFile.exists()) {
+				outputFile.createNewFile();
+			}
+			fileWriter = new BufferedWriter(new FileWriter(
+					outputFile, true));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 	
+	private void closeFile() {
+		try {
+			if (fileWriter != null)
+				fileWriter.close();
+				fileWriter = null;
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	String[] arrayOfStrings = {};
+	public String[] getIncludeSignatures() {
+		return (String []) initial.toArray(arrayOfStrings);
+	}
+
+	public BufferedWriter getFileWriter() {
+		return fileWriter;
+	}
+
 }

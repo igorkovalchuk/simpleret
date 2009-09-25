@@ -1,4 +1,55 @@
 
+USAGE
+=====
+
+1. Create a new directory to hold your configuration file and output in APPDATA; 
+
+APPDATA=C:\Documents and Settings\multiki\Application Data
+
+cd %APPDATA%
+
+mkdir simpleret
+
+cd simpleret
+
+2. Create a configuration file here "trace.cfg.test.txt" with the next content:
+
+# Enable tracing.
+[enabled]
+# Print results to the file.
+[file]:trace.output.test.txt
+# Also print results to the Console.
+[display]
+# Include these classes.
+[include]:com.googlecode.*
+
+3. Run an example:
+
+java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,address=8000 com.googlecode.simpleret.example.Main
+
+Listening for transport dt_socket at address: 8000
+
+4. Run a trace recorder:
+
+java -cp ".;C:\jdk\lib\tools.jar;C:\project\lib\log4j-1.2.11.jar" com.googlecode.simpleret.recorder.JPDATraceRecorder 
+
+5. See results in trace.out.test.txt
+
+
+KEYBOARD
+========
+
+Listening for transport dt_socket at address: 8000
+... in Alpha start
+... in Betha start
+... in Gamma start
+... in Gamma inside1
+... in Gamma inside2
+... in Gamma start
+... in Gamma inside1
+... in Gamma inside2
+
+
 Keys:
 
 q,w,e,r - scrolling backward

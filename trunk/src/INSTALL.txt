@@ -24,6 +24,8 @@ Note: You may try other versions of software.
     mysql-connector-java-5.1.7-bin.jar (if you use MySQL, www.mysql.com)
     junit (version 3.8, jUnit site)
 
+	Also, please use tools.jar from JDK in the classpath.
+
 3. Start HSQL server.
     cd c:\hsqldb\lib\databases
     java -cp ..\hsqldb.jar org.hsqldb.Server -database.1 file:simpleret001 -dbname.1 simpleret

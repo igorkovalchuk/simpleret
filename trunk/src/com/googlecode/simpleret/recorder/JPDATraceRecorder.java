@@ -52,7 +52,16 @@ public class JPDATraceRecorder {
 
         VirtualMachine vm = connector.attach(arguments);
         vm.setDebugTraceMode(0);
-        EventThread eventThread = new EventThread(vm, null, null);
+
+        Configuration c = new Configuration();
+        c.setInputFile("trace.cfg.test.txt");
+        c.initialize();
+        String[] include = c.getIncludeSignatures();
+        //String[] include = {"com.googlecode.*"};
+
+		Recorder recorder = new Recorder(c);
+		
+        EventThread eventThread = new EventThread(vm, include, null,recorder);
         eventThread.setEventRequests(false);
         eventThread.start();
         vm.resume();

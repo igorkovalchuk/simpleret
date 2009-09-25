@@ -55,7 +55,7 @@ import java.io.PrintWriter;
 public class EventThread extends Thread {
 
     private final VirtualMachine vm;   // Running VM
-    private final String[] excludes;   // Packages to exclude
+    private final String[] filter;   // Packages to include/exclude
     private final PrintWriter writer;  // Where output goes
 
     static String nextBaseIndent = ""; // Starting indent for next thread
@@ -66,11 +66,18 @@ public class EventThread extends Thread {
     // Maps ThreadReference to ThreadTrace instances
     private Map traceMap = new HashMap();
 
-    EventThread(VirtualMachine vm, String[] excludes, PrintWriter writer) {
+    private final Recorder recorder;
+
+    EventThread(VirtualMachine vm, String[] filter, PrintWriter writer, Recorder recorder) {
         super("event-handler");
         this.vm = vm;
-        this.excludes = excludes;
+        if (filter == null)
+        	filter = new String[]{}; 
+        this.filter = filter;
+        if (writer == null)
+        	writer = new PrintWriter(System.out);
         this.writer = writer;
+        this.recorder = recorder;
     }
 
     /**
@@ -110,19 +117,22 @@ public class EventThread extends Thread {
         ExceptionRequest excReq = mgr.createExceptionRequest(null, 
                                                              true, true); 
         // suspend so we can step
+        for (int i=0; i<filter.length; ++i) {
+        	excReq.addClassFilter(filter[i]);
+        }
         excReq.setSuspendPolicy(EventRequest.SUSPEND_ALL);
         excReq.enable();
 
         MethodEntryRequest menr = mgr.createMethodEntryRequest();
-        for (int i=0; i<excludes.length; ++i) {
-            menr.addClassExclusionFilter(excludes[i]);
+        for (int i=0; i<filter.length; ++i) {
+        	menr.addClassFilter(filter[i]);
         }
         menr.setSuspendPolicy(EventRequest.SUSPEND_NONE);
         menr.enable();
 
         MethodExitRequest mexr = mgr.createMethodExitRequest();
-        for (int i=0; i<excludes.length; ++i) {
-            mexr.addClassExclusionFilter(excludes[i]);
+        for (int i=0; i<filter.length; ++i) {
+        	mexr.addClassFilter(filter[i]);
         }
         mexr.setSuspendPolicy(EventRequest.SUSPEND_NONE);
         mexr.enable();
@@ -132,14 +142,16 @@ public class EventThread extends Thread {
         tdr.setSuspendPolicy(EventRequest.SUSPEND_ALL);
         tdr.enable();
 
+/*
 	if (watchFields) {
 	    ClassPrepareRequest cpr = mgr.createClassPrepareRequest();
-	    for (int i=0; i<excludes.length; ++i) {
-		cpr.addClassExclusionFilter(excludes[i]);
+	    for (int i=0; i<filter.length; ++i) {
+		cpr.addClassExclusionFilter(filter[i]);
 	    }
 	    cpr.setSuspendPolicy(EventRequest.SUSPEND_ALL);
 	    cpr.enable();
 	}
+*/
     }
 
     /**
@@ -161,18 +173,42 @@ public class EventThread extends Thread {
 	}
 
 	private void println(String str) {
-	    writer.print(indent);
-	    writer.println(str);
+	    //writer.print(indent);
+	    //writer.println(str);
+		//System.out.print(indent);
+		//System.out.println(str);
 	}
 
 	void methodEntryEvent(MethodEntryEvent event)  {
+
+		recorder.trace(
+				new Signature(
+						event.method().declaringType().name(),
+						event.method().name(),
+						event.thread().uniqueID(),
+						true
+				)
+		);
+
+		
 	    println(event.method().name() + "  --  " 
                     + event.method().declaringType().name());
+		 
 	    indent.append("| ");
 	}
 	
 	void methodExitEvent(MethodExitEvent event)  {
 	    indent.setLength(indent.length()-2);
+
+		recorder.trace(
+				new Signature(
+						event.method().declaringType().name(),
+						event.method().name(),
+						event.thread().uniqueID(),
+						false
+				)
+		);
+
 	}
 	
 	void fieldWatchEvent(ModificationWatchpointEvent event)  {
@@ -182,6 +218,16 @@ public class EventThread extends Thread {
 	}
 	
 	void exceptionEvent(ExceptionEvent event) {
+		
+		recorder.trace(
+				new Signature(
+						event.catchLocation().declaringType().name(),
+						event.catchLocation().method().name(),
+						event.thread().uniqueID(),
+						false
+				)
+		);
+		
 	    println("Exception: " + event.exception() + 
 		    " catch: " + event.catchLocation());
 
@@ -329,8 +375,8 @@ public class EventThread extends Thread {
 	    Field field = (Field)it.next();
 	    ModificationWatchpointRequest req = 
 		     mgr.createModificationWatchpointRequest(field);
-            for (int i=0; i<excludes.length; ++i) {
-                req.addClassExclusionFilter(excludes[i]);
+            for (int i=0; i<filter.length; ++i) {
+                req.addClassExclusionFilter(filter[i]);
             }
 	    req.setSuspendPolicy(EventRequest.SUSPEND_NONE);
 	    req.enable();
