@@ -2,8 +2,6 @@ package com.googlecode.simpleret.database;
 
 import com.googlecode.simpleret.viewer.Data;
 
-//import com.googlecode.simpleret.Constants;
-
 /**
  * Represent a line (a string) from the program trace.
  */
@@ -120,18 +118,17 @@ public class Trace {
 		VocabularyCache vc = data.getVocabularyCache();
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("<a href=\"http://localhost?id="+this.id+"\">");
+		sb.append("<a href=\"http://localhost?id=" + this.id + "\">");
 
 		String thisIDstr = String.valueOf(id);
-		while(thisIDstr.length() < 9) {
+		while (thisIDstr.length() < 9) {
 			thisIDstr = " " + thisIDstr;
 		}
 
-		sb.append(thisIDstr).
-		append("</a>").
+		sb.append(thisIDstr).append("</a>").
 
 		append("&nbsp;").append(level);
-		for(int i = 0; i  <= level; i++) {
+		for (int i = 0; i <= level; i++) {
 			sb.append("&nbsp;&nbsp;");
 		}
 		if (this.ret) {
@@ -149,7 +146,7 @@ public class Trace {
 			if (c.length() == 8) {
 				c = c.substring(2, 8);
 			}
-			while(c.length() < 6) {
+			while (c.length() < 6) {
 				c = '0' + c;
 			}
 		}
@@ -165,6 +162,122 @@ public class Trace {
 		}
 
 		return sb.toString();
+	}
+
+	public String getHTML(Data data) {
+		
+		VocabularyCache vc = data.getVocabularyCache();
+		
+		StringBuffer sb = new StringBuffer();
+
+		String idString = String.valueOf(id);
+		
+		int len = idString.length();
+		while (len < 9) {
+			sb.append(" ");
+			len++;
+		}
+		
+		Integer otherID;
+		if (this.ret) {
+			otherID = data.getEndId2currentId().get(this.id);
+		} else {
+			otherID = data.getCurrentId2endId().get(this.id);
+		}
+		
+		sb.append("<a id=\"" + idString + "\"" + " href=\"#" + otherID + "\" " + ">");
+		sb.append(idString);
+		sb.append("</a>");
+		
+		sb.append("&nbsp;");
+
+		for (int i = 0; i <= level; i++) {
+			sb.append("&nbsp;&nbsp;");
+		}
+		
+		if (this.ret) {
+			sb.append("&nbsp;&nbsp;");
+		} else {
+			sb.append("&gt;&nbsp;");
+		}
+		
+		String call = vc.getCall(this.vocabularyId);
+		call = call.replace(">", "&gt;");
+		call = call.replace("<", "&lt;");
+
+		String c = null;
+		if (this.colourMarker != null) {
+			c = Integer.toHexString(this.colourMarker.intValue());
+			if (c.length() == 8) {
+				c = c.substring(2, 8);
+			}
+			while (c.length() < 6) {
+				c = '0' + c;
+			}
+		}
+
+		if (c != null) {
+			sb.append("<span style=\"color:#" + c + ";\">");
+		}
+
+		sb.append(call);
+
+		if (c != null) {
+			sb.append("</span>");
+		}
+
+		return sb.toString();
+	}
+	
+	public String getSignature(Data data) {
+		VocabularyCache vc = data.getVocabularyCache();
+		String call = vc.getCall(this.vocabularyId);
+		if (call == null) 
+			call = "UnknownClass.unknownMethod"+id;
+		return call;
+	}
+	
+	/*
+	public String getClassName(String signature) {
+		int index = signature.lastIndexOf((int)'.');
+		if (index > 0) {
+			return signature.substring(0, index);
+		}
+		throw new RuntimeException("Can't find a class name for [" + signature + "]");
+	}
+	*/
+	
+	public String getClassNameAmaterasUML(String signature) {
+		StringBuffer result = new StringBuffer();
+		int index1 = signature.lastIndexOf((int)'.'); // point before a methods name;	
+		int index2;
+		if (index1 > 0) {
+			index2 = signature.lastIndexOf((int)'.', index1 - 1);// point before a class' name;
+			if (index2 >= 0) {
+				// "package.Class.method()" => "Class :: package.Class"
+				result.append(signature.substring(index2 + 1, index1));
+				result.append(" :: ");
+				result.append(signature.substring(0, index1));
+			} else {
+				// "Class.method()" => "Class"
+				result.append(signature.substring(0, index1));
+			}
+			return result.toString();
+		}
+		throw new RuntimeException("Can't find a class name for [" + signature + "]");
+	}
+	
+	public String getMethodName(String signature) {
+		int index1 = signature.lastIndexOf((int)'.') + 1;
+		int index2 = signature.lastIndexOf((int)'(');
+		if (index1 >= 0) {
+			if (index2 >= 0) {
+				return signature.substring(index1, index2);
+			} else {
+				return signature.substring(index1);
+			}
+		}
+		throw new RuntimeException("Can't find a class name for [" +  signature + "]");
 	}
 	
 }
