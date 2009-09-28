@@ -3,6 +3,8 @@ package com.googlecode.simpleret.viewer;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.JOptionPane;
+
 import com.googlecode.simpleret.Constants;
 
 class ViewerKeyListener implements KeyListener {
@@ -62,12 +64,12 @@ class ViewerKeyListener implements KeyListener {
 		}
 		
 		// Show the Instrumental Panel.
-		if (key == '9') {
+		if (key == '0') {
 			( new FrameInstruments() ).show(data, viewer);
 			return;
 		}
 		
-		if (key == '8') {
+		if (key == '9') {
 			( new FrameInputRange() ).input(data, viewer);
 			return;
 		}
@@ -93,9 +95,32 @@ class ViewerKeyListener implements KeyListener {
 		}
 		
 		if (key == 'u') { // AmaterasUML
+			String classUML = "net.java.amateras.uml.sequencediagram.model.SequenceModelBuilder";
+			try {
+				Class.forName(classUML);
+				Class clazz = Class.forName("com.googlecode.simpleret.viewer.ExportAmaterasUML");
+				ExportInterface export = (ExportInterface) clazz.newInstance();
+				export.export(data, viewer);
+			} catch (java.lang.Error e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(viewer,
+						e.toString());
+				return;
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+				JOptionPane.showMessageDialog(viewer,
+						e.toString());
+				return;
+			} catch (IllegalAccessException e) {
+				throw new RuntimeException(e);
+			} catch (InstantiationException e) {
+				throw new RuntimeException(e);
+			}
 		}
 		
 		if (key == 'h') { // HTML export
+			(new ExportHTML()).export(data, viewer);
+			return;
 		}
 		
 	}

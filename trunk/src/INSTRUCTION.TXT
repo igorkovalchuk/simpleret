@@ -52,22 +52,26 @@ Listening for transport dt_socket at address: 8000
 
 Keys:
 
-q,w,e,r - scrolling backward
-a,s,d,f - scrolling forward
+Q,W,E,R - scrolling backward
+A,S,D,F - scrolling forward
 
-z - show only colourised records
+Z - show only colourised records
 
 1,2,3 - prepare a list of signatures to filter;
 every signature looks like com.package.class.method
 or com.package.class
 or like a Java regular expression ^.*method.*$
 
-9 - Instrumental window
+0 - Instrumental window
 
-l - change the current deepness (level) of view
+9 - input a range of identifiers to show
+X - display that range;
 
-8 - input a range of identifiers to show
-x - display that range;
+L - change the current deepness (level) of view
+
+H - HTML export
+
+U - AmaterasUML export
 
 Click on link (number/id) to use the current colour
 of that line for "Clean colour".

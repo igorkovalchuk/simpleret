@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -13,6 +14,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
+
+import com.googlecode.simpleret.Utilities;
 
 /**
  * 1. Show the dialog.
@@ -49,6 +52,10 @@ public class TraceImporter extends JPanel {
 		final JFileChooser fileChooser = new JFileChooser();
 		TraceImporterFileFilter ff = new TraceImporterFileFilter();
 		fileChooser.addChoosableFileFilter(ff);
+		
+		String path = Utilities.getApplicationDataPath();
+		File currentDirectory = new File(path);
+		fileChooser.setCurrentDirectory(currentDirectory);
 
 		final JTextField jtfFileName = new JTextField();
 		jtfFileName.setSize(50, 1);
