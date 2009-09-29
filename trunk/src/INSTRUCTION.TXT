@@ -27,11 +27,23 @@ cd simpleret
 
 java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,address=8000 com.googlecode.simpleret.example.Main
 
+or (for a shared memory transport)
+
+java -Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n,address=mysharedmemory com.googlecode.simpleret.example.Main
+
+[Note: for a large real life applications please also set -Xrunjdwp:suspend=n
+and turn on the Trace Recorder only temporarily, i.e. for some concrete actions.]
+
 Listening for transport dt_socket at address: 8000
 
 4. Run a trace recorder:
 
-java -cp ".;C:\jdk\lib\tools.jar;C:\project\lib\log4j-1.2.11.jar" com.googlecode.simpleret.recorder.JPDATraceRecorder 
+java -cp ".;log4j_path/log4j.jar;jdk_lib_path/tools.jar" com.googlecode.simpleret.recorder.JPDATraceRecorder -host 127.0.0.1 -port 8000
+
+For a shared memory transport on the Microsoft Windows platform:
+        -local some-shared-memory-address-name
+Otherwise:
+        -host somehost -port someport
 
 5. See results in trace.out.test.txt
 

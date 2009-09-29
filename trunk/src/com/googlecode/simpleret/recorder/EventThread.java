@@ -87,12 +87,15 @@ public class EventThread extends Thread {
      */
     public void run() { 
         EventQueue queue = vm.eventQueue();
+                
         while (connected) {
             try {
                 EventSet eventSet = queue.remove();
                 EventIterator it = eventSet.eventIterator();
+                Event event;
                 while (it.hasNext()) {
-                    handleEvent(it.nextEvent());
+                	event = it.nextEvent();
+                    handleEvent(event);
                 }
                 eventSet.resume();
             } catch (InterruptedException exc) {
