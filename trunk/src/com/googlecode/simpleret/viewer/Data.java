@@ -120,10 +120,10 @@ public class Data {
 	 * We shell know about 
 	 * isReinitialize and
 	 * isChanged.
+	 * 
+	 * It is necessary to call resetState() everytime after this method. 
 	 */
 	public void defineState() {
-		reinitialize = false;
-		changed = false;
 		if (pointer != pointerPrevious) {
 			changed = true;
 		}
