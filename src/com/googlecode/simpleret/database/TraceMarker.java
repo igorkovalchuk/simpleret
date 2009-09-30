@@ -1,7 +1,6 @@
 package com.googlecode.simpleret.database;
 
 import java.awt.Color;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -10,11 +9,14 @@ import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.classic.Session;
 
+import com.googlecode.simpleret.Constants;
 import com.googlecode.simpleret.database.HibernateUtility;
 import com.googlecode.simpleret.viewer.DataFilter;
 import com.googlecode.simpleret.viewer.Data;
+import com.googlecode.simpleret.viewer.FrameProgressBar;
 import com.googlecode.simpleret.viewer.SetOfSets;
 import com.googlecode.simpleret.viewer.Range;
+import com.googlecode.simpleret.viewer.Viewer;
 import com.googlecode.simpleret.viewer.Where;
 
 public class TraceMarker {
@@ -26,13 +28,19 @@ public class TraceMarker {
 	Integer colour = null;
 	private Set<String> signatures = null;
 	
-	Set<Integer> alreadySet = new HashSet<Integer>();
+	//private Set<Integer> alreadySet = new HashSet<Integer>();
 	
-	public TraceMarker(Data data, DataFilter filter, String signaturesId, Color colour) {
+	private FrameProgressBar progressBar;
+	private int wordsNumber = 0;
+	private int wordsProgress = 0;
+	private Viewer viewer;
+	
+	public TraceMarker(Data data, DataFilter filter, String signaturesId, Color colour, Viewer viewer) {
 		this.data = data;
 		this.filter = filter;
 		if (colour != null)
 			this.colour = colour.getRGB();
+		this.viewer = viewer;
 		signatures = data.getSignatures().getSignaturesByListId(signaturesId);
 		
 		logger.debug("colour = " + this.colour);
@@ -47,13 +55,26 @@ public class TraceMarker {
 		List<Integer> words = data.getVocabularyCache().getVocabularyList(signatures);
 		if (words.size() == 0)
 			return;
+
+		viewer.setEnabled(false);
 		
+		progressBar = new FrameProgressBar(0, Constants.PROGRESS_MAX);
+
 		Iterator<Integer> i = words.iterator();
 		Integer wordId;
+		wordsNumber = words.size();
 		while(i.hasNext()) {
+			wordsProgress++;
 			wordId = i.next();
 			colouriseWordOptimised(wordId);
 		}
+		
+		progressBar.dipose();
+		
+		viewer.setEnabled(true);
+		viewer.grabFocus();
+		data.setChanged(true);
+		viewer.showSelection();
 	}
 	
 	
@@ -106,9 +127,16 @@ public class TraceMarker {
 			}
 		}
 		
+		int sqlNumber = 0;
+		int sqlProgress = 0;
+		
+		sqlNumber = parents.number();
+		
 		if (isSubelements) {
 			Iterator <SetOfSets<Range>> j = ranges.iteratorSectionBySection();
+			sqlNumber += ranges.number();
 			while(j.hasNext()) {
+				sqlProgress++;
 				String sql = this.buildSqlRange(j.next());
 				hsql = "update Trace set colourMarker = :p1 where " + sql;
 				logger.debug("SQL (SUBELEMENTS): " + hsql);
@@ -116,10 +144,14 @@ public class TraceMarker {
 				query.setInteger("p1", colour);
 				int result = query.executeUpdate();
 				logger.debug("UPDATED: " + result);
+				progressBar.setString(this.wordsProgress + " / " + this.wordsNumber);
+				progressBar.setValue(Constants.PROGRESS_MAX * sqlProgress / sqlNumber);
 			}
 		} else if (isItself) {
 			Iterator <SetOfSets<Integer>> j = ids.iteratorSectionBySection();
+			sqlNumber += ids.number();
 			while(j.hasNext()) {
+				sqlProgress++;
 				String sql = this.buildSqlIN(j.next());
 				hsql = "update Trace set colourMarker = :p1 where id in ( " + sql + " )";
 				logger.debug("SQL (ITSELF): " + hsql);
@@ -127,12 +159,15 @@ public class TraceMarker {
 				query.setInteger("p1", colour);
 				int result = query.executeUpdate();
 				logger.debug("UPDATED: " + result);
+				progressBar.setString(this.wordsProgress + " / " + this.wordsNumber);
+				progressBar.setValue(Constants.PROGRESS_MAX * sqlProgress / sqlNumber);
 			}
 		}
 		
 		if (isParents) {
 			Iterator <SetOfSets<Integer>> j = parents.iteratorSectionBySection();
 			while(j.hasNext()) {
+				sqlProgress++;
 				String sql = this.buildSqlIN(j.next());
 				hsql = "update Trace set colourMarker = :p1 where id in ( " + sql + " )";
 				logger.debug("SQL (PARENTS): " + hsql);
@@ -140,6 +175,8 @@ public class TraceMarker {
 				query.setInteger("p1", colour);
 				int result = query.executeUpdate();
 				logger.debug("UPDATED: " + result);
+				progressBar.setString(this.wordsProgress + " / " + this.wordsNumber);
+				progressBar.setValue(Constants.PROGRESS_MAX * sqlProgress / sqlNumber);
 			}
 		}
 

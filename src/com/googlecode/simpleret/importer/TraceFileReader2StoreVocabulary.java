@@ -16,8 +16,8 @@ import com.googlecode.simpleret.database.Vocabulary;
  */
 public class TraceFileReader2StoreVocabulary extends TraceFileReaderAbstract {
 
-	static Logger logger = Logger.getLogger(
-				TraceFileReader2StoreVocabulary.class );
+	static Logger logger = Logger
+			.getLogger(TraceFileReader2StoreVocabulary.class);
 
 	Long threadIdentifier = null;
 
@@ -34,7 +34,8 @@ public class TraceFileReader2StoreVocabulary extends TraceFileReaderAbstract {
 	protected void beforeRead() {
 		// does nothing;
 
-		// Just for verify JDBC connection... to avoid time wasting if the database is not active.
+		// Just for verify JDBC connection... to avoid time wasting if the
+		// database is not active.
 		HibernateUtility.getSessionFactory().getCurrentSession();
 	}
 

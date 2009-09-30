@@ -38,4 +38,14 @@ public class Utilities {
 		return appdata;
 	}
 
+	public static void sleep(long millis) {
+		try {
+			System.out.println("Sleep: " + millis/1000 + " sec.");
+			Thread.sleep(millis);
+			System.out.println("Sleep - done");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

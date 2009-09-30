@@ -8,16 +8,18 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-abstract public class TraceFileReaderAbstract {
+import com.googlecode.simpleret.Constants;
 
-	static Logger abstractLogger = 
-		Logger.getLogger(TraceFileReaderAbstract.class);
+abstract public class TraceFileReaderAbstract extends TraceImporterProgress {
+
+	static Logger abstractLogger = Logger
+			.getLogger(TraceFileReaderAbstract.class);
 
 	abstract protected void beforeRead();
 
-	/** 
-	 * @param values
-	 *            , where:<br>
+	/**
+	 * @param values ,
+	 *            where:<br>
 	 *            values[0] - id,<br>
 	 *            values[1] - level,<br>
 	 *            values[2] - threadID,<br>
@@ -33,11 +35,12 @@ abstract public class TraceFileReaderAbstract {
 	 * 1) Call child's class method 'before reading a file';<br>
 	 * 2) Call child's class method 'process string';<br>
 	 * 3) Call child's class method 'after reading a file';<br>
+	 * 
 	 * @param fileName
 	 */
 	protected void startProcessing(String fileName) {
 
-		//abstractLogger.info("Reading file: " + fileName);
+		// abstractLogger.info("Reading file: " + fileName);
 
 		File fileToRead = new File(fileName);
 
@@ -52,32 +55,39 @@ abstract public class TraceFileReaderAbstract {
 		boolean errors = false;
 
 		try {
+			long size = fileToRead.length();
+			long bytes = 0;
 			FileReader fr = new FileReader(fileToRead);
 			BufferedReader in = new BufferedReader(fr);
 			String str;
 			while ((str = in.readLine()) != null) {
-				if (str == null) {
-					continue;
-				}
+				bytes += str.length();
 				str = str.trim();
 
 				// Ignore empty lines.
-				if ( str.equals("") ) {
+				if (str.equals("")) {
 					continue;
 				}
-				
+
 				// Ignore comments.
 				if (str.startsWith("#")) {
 					continue;
 				}
-				
+
 				String[] values = str.split("\t");
 				if (values.length != 5) {
-					abstractLogger.error("Incorrect record: [" + str + "], length = " + str.length());
+					abstractLogger.error("Incorrect record: [" + str
+							+ "], length = " + str.length());
 					System.exit(1);
 				}
 				// PROCESS STRING
 				processString(values);
+				if (progressBar != null) {
+					progressBar.setString(progressBarDescription + bytes
+							+ " / " + size);
+					progressBar
+					.setValue((int) (Constants.PROGRESS_MAX * bytes / size));
+				}
 			}
 			in.close();
 		} catch (FileNotFoundException e) {
@@ -93,4 +103,5 @@ abstract public class TraceFileReaderAbstract {
 		// AFTER READ
 		this.afterRead(errors);
 	}
+
 }
