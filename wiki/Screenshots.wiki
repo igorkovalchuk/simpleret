@@ -4,7 +4,8 @@ http://simpleret.googlecode.com/svn/trunk/doc/result_1.png
 
 =HTML=
 
-<html><head></head><body style="font-family:monospace;font-size:14px;background:#ffffff;"><pre>       <a id="66" href="#67" >66</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;<span style="color:#ff99ff;">net.java.amateras.uml.model.AbstractUMLModel.isPropertySet()</span>
+<p style="font-family:monospace;font-size:14px;background:#ffffff;">
+<pre>       <a id="66" href="#67" >66</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;<span style="color:#ff99ff;">net.java.amateras.uml.model.AbstractUMLModel.isPropertySet()</span>
        <a id="67" href="#66" >67</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff99ff;">net.java.amateras.uml.model.AbstractUMLModel.isPropertySet()</span>
        <a id="70" href="#71" >70</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;<span style="color:#ff99ff;">net.java.amateras.uml.model.AbstractUMLModel.getPropertyValue()</span>
        <a id="71" href="#70" >71</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff99ff;">net.java.amateras.uml.model.AbstractUMLModel.getPropertyValue()</span>
@@ -56,4 +57,5 @@ http://simpleret.googlecode.com/svn/trunk/doc/result_1.png
       <a id="235" href="#234" >235</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff99ff;">net.java.amateras.uml.model.AbstractUMLModel.getPropertyValue()</span>
       <a id="262" href="#263" >262</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&gt;&nbsp;<span style="color:#ff99ff;">net.java.amateras.uml.model.AbstractUMLModel.getPropertyValue()</span>
       <a id="263" href="#262" >263</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#ff99ff;">net.java.amateras.uml.model.AbstractUMLModel.getPropertyValue()</span>
-</pre></body></html>
+</pre>
+</p>
