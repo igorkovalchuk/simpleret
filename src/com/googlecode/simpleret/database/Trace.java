@@ -37,6 +37,9 @@ public class Trace {
 	 */
 	private boolean ret = false; // return
 
+	/**
+	 * Reference to the Vocabulary of calls.
+	 */
 	private int vocabularyId = 0;
 
 	/**
@@ -113,6 +116,12 @@ public class Trace {
 		this.parentId = parentId;
 	}
 
+	/**
+	 * Especially for the SimpleRET Viewer.
+	 * 
+	 * @return
+	 * 		a string that represent a call.
+	 */
 	public String getTextView(Data data) {
 
 		VocabularyCache vc = data.getVocabularyCache();
@@ -164,6 +173,12 @@ public class Trace {
 		return sb.toString();
 	}
 
+	/**
+	 * Especially for HTML export.
+	 * 
+	 * @return
+	 * 		a string that represent a call.
+	 */
 	public String getHTML(Data data) {
 		
 		VocabularyCache vc = data.getVocabularyCache();
@@ -229,6 +244,11 @@ public class Trace {
 		return sb.toString();
 	}
 	
+	/**
+	 * @return
+	 * 		a string that represent this call,
+	 * 		like this "package.class.method".
+	 */
 	public String getSignature(Data data) {
 		VocabularyCache vc = data.getVocabularyCache();
 		String call = vc.getCall(this.vocabularyId);
@@ -247,6 +267,20 @@ public class Trace {
 	}
 	*/
 	
+	/**
+	 * Especially to create a name of class like this "Class :: package.Class"
+	 * for the AmaterasUML diagram.
+	 * 
+	 * If we will show only "package.Class" a user will
+	 * not see that caption, because an icon of class
+	 * have a limited width.
+	 * 
+	 * @return
+	 * 		a string like this 
+	 * 		"Class :: package.Class"
+	 * 		or this
+	 * 		"Class" .
+	 */
 	public String getClassNameAmaterasUML(String signature) {
 		StringBuffer result = new StringBuffer();
 		int index1 = signature.lastIndexOf((int)'.'); // point before a methods name;	
@@ -266,7 +300,14 @@ public class Trace {
 		}
 		throw new RuntimeException("Can't find a class name for [" + signature + "]");
 	}
-	
+
+	/**
+	 * Especially to create a description of a call
+	 * for the AmaterasUML diagram.
+	 * 
+	 * @return
+	 * 		a string like this "method" .
+	 */
 	public String getMethodName(String signature) {
 		int index1 = signature.lastIndexOf((int)'.') + 1;
 		int index2 = signature.lastIndexOf((int)'(');

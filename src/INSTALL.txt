@@ -1,4 +1,9 @@
 
+Note:
+
+it works only in Windows,
+Linux - coming soon.
+
 1. Requirements:
 
 Note: You may try other versions of software.
@@ -24,16 +29,38 @@ Note: You may try other versions of software.
     mysql-connector-java-5.1.7-bin.jar (if you use MySQL, www.mysql.com)
     junit (version 3.8, jUnit site)
 
-	Also, please use tools.jar from JDK in the classpath.
+	Also, please use tools.jar from JDK in the classpath:
+	
+	Java/jdk1.5.0_06/lib/tools.jar
 
-3. Start HSQL server.
+3. Database.
+
+	Start HSQL server (today this database server is still not tested).
     cd c:\hsqldb\lib\databases
     java -cp ..\hsqldb.jar org.hsqldb.Server -database.1 file:simpleret001 -dbname.1 simpleret
 
-4. If you use MySQL, Create MySQL case sensitive database:
+	or
+
+	If you use MySQL, Create MySQL case sensitive database:
     CREATE DATABASE trace CHARACTER SET latin1 COLLATE latin1_general_cs;
 
-5. Only first start(!!!): uncomment hibernate.cfg.xml to automatically generate the database structure: 
+4. Only first start(!!!): uncomment hibernate.cfg.xml to automatically generate the database structure: 
     <property name="hbm2ddl.auto">create</property>
+
+5. To enable export to the AmaterasUML:
+
+	Download AmaterasUML from:
+
+	http://amateras.sourceforge.jp
+
+	Add these packages to the Eclipse classpath:
+
+	ECLIPSE_HOME/plugins/org.eclipse.ui.views_3.2.101.M20070910-0800b.jar
+	ECLIPSE_HOME/plugins/org.eclipse.draw2d_3.2.100.v20070529.jar
+	ECLIPSE_HOME/plugins/org.eclipse.swt.win32.win32.x86_3.3.1.v3346i.jar (Windows)
+	ECLIPSE_HOME/plugins/net.java.amateras.umleditor_1.3.1.jar
+	ECLIPSE_HOME/plugins/net.java.amateras.xstream_1.3.1.jar
+	ECLIPSE_HOME/plugins/net.java.amateras.umleditor.java_1.3.1.jar
+	lib/xstream-1.1.2.jar (extract it from net.java.amateras.xstream_1.3.1.jar)
 
 

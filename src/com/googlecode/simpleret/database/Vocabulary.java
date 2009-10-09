@@ -5,7 +5,14 @@ package com.googlecode.simpleret.database;
  */
 public class Vocabulary {
 
+	/**
+	 * An id of word in the database table.
+	 */
 	private Integer id = null;
+
+	/**
+	 * A string like this: "package.class.method()".
+	 */
 	private String word = "";
 
 	public Integer getId() {

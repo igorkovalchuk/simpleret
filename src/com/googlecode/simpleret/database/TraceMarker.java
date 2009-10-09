@@ -22,30 +22,66 @@ import com.googlecode.simpleret.viewer.Where;
 public class TraceMarker {
 
 	private static Logger logger = Logger.getLogger(TraceMarker.class);
-	
+
 	private Data data = null;
+
 	private DataFilter filter = null;
-	Integer colour = null;
+
+	/**
+	 * A colour to mark with.
+	 */
+	private Integer colour = null;
+
+	/**
+	 * Signatures to mark by a particular colour.
+	 */
 	private Set<String> signatures = null;
-	
+
 	//private Set<Integer> alreadySet = new HashSet<Integer>();
 	
 	private FrameProgressBar progressBar;
+
+	/**
+	 * For a progress bar.
+	 */
 	private int wordsNumber = 0;
+
+	/**
+	 * For a progress bar.
+	 */
 	private int wordsProgress = 0;
+
 	private Viewer viewer;
-	
-	public TraceMarker(Data data, DataFilter filter, String signaturesId, Color colour, Viewer viewer) {
+
+	/**
+	 * @param data
+	 * 			an object of "Data", the Singleton.
+	 * @param filter
+	 * 			an object of DataFilter that defines,
+	 * 			which additional objects we have to colourise.
+	 * @param signaturesListId
+	 * 			an identifier of list of signatures. User creates
+	 * 			that list of signatures manually, by using a User Interface.
+	 * @param colour
+	 * 			a colour to mark signatures with.
+	 * @param viewer
+	 * 			an object of the Viewer (i.e. object of a User Interface).
+	 */
+	public TraceMarker(Data data, DataFilter filter, String signaturesListId, Color colour, Viewer viewer) {
 		this.data = data;
 		this.filter = filter;
 		if (colour != null)
 			this.colour = colour.getRGB();
 		this.viewer = viewer;
-		signatures = data.getSignatures().getSignaturesByListId(signaturesId);
+		signatures = data.getSignatures().getSignaturesByListId(signaturesListId);
 		
 		logger.debug("colour = " + this.colour);
 	}
-	
+
+	/**
+	 * Colourise a list of signatures and other appropriate signatures
+	 * defined by rules in DataFilter.
+	 */
 	public void colourise() {
 		if (signatures == null || colour == null || (! filter.isDefined()) ) {
 			logger.warn("Useless call of colourise.");
@@ -76,8 +112,14 @@ public class TraceMarker {
 		data.setChanged(true);
 		viewer.showSelection();
 	}
-	
-	
+
+	/**
+	 * Colourise a particular signature.
+	 * Colourise it/its parents/its sub-elements (see DataFilter).
+	 * 
+	 * @param wordId
+	 * 			a signature' identifier.
+	 */
 	private void colouriseWordOptimised(Integer wordId) {
 		
 		logger.debug("word id = " + wordId);
@@ -183,8 +225,28 @@ public class TraceMarker {
 		done();
 	}
 	
-	
+	/**
+	 * @param list
+	 * 			a list of identifiers to build SQL.
+	 * @return
+	 * 		a string or a combination of strings like these <br>
+	 * 		(id&lt;123)<br>
+	 * 		(id&gt;123)<br>
+	 * 		(id&gt;123 and id&lt;456)<br>
+	 * 		(id&lt;=123)<br>
+	 * 		(id&gt;=123)<br>
+	 * 		(id&gt;=123 and id=&lt;456)<br>
+	 * 		or an empty string.<br>
+	 * 		<br>
+	 * 		An example:<br>
+	 * 		(id&lt;5) or (id&gt;123 and id&lt;456) or (id&gt;700)
+	 */
 	public String buildSqlRange(SetOfSets<Range> list) {
+
+		// TODO: A complicated design here.
+		// Please change SetOfSets object
+		// to an Iterator.
+
 		StringBuilder result = new StringBuilder();
 		
 		String lt = "<";
@@ -225,7 +287,18 @@ public class TraceMarker {
 		return result.toString().trim();
 	}
 	
+	/**
+	 * @param list
+	 * 			a list of identifiers to build SQL.
+	 * @return
+	 * 		a string like this "1,2,3,4,5" or an empty string.
+	 */
 	public String buildSqlIN(SetOfSets<Integer> list) {
+
+		// TODO: A complicated design here.
+		// Please change SetOfSets object
+		// to an Iterator.
+
 		StringBuffer result = new StringBuffer();
 		Iterator<Integer> i = list.iterator();
 		boolean started = false;
@@ -244,6 +317,9 @@ public class TraceMarker {
 		return result.toString();
 	}
 
+	/**
+	 * Clean a particular colour in the database (set it to null).
+	 */
 	public void colourReset() {
 		Session session = data.getSession();
 		
@@ -260,6 +336,9 @@ public class TraceMarker {
 		done();
 	}
 
+	/**
+	 * Set all colours in the database to null.
+	 */
 	public void allColoursReset() {
 		Session session = data.getSession();				
 		String hsql = "update Trace set colourMarker = null where colourMarker is not null"; 
@@ -269,6 +348,9 @@ public class TraceMarker {
 		done();
 	}
 
+	/**
+	 * Commit and start a new database transaction.
+	 */
 	private void done() {
 		data.getSession().getTransaction().commit();
 		data.setSession( HibernateUtility.getSessionFactory().getCurrentSession() );
