@@ -13,7 +13,7 @@ import com.googlecode.simpleret.database.Trace;
 import com.googlecode.simpleret.database.Vocabulary;
 
 /**
- * Reading the program trace and store it into the database.
+ * Reading a whole program trace and store it to the database.
  */
 public class TraceFileReader3StoreTrace extends TraceFileReaderAbstract {
 
@@ -31,7 +31,14 @@ public class TraceFileReader3StoreTrace extends TraceFileReaderAbstract {
 	 */
 	int currentIdentifier = 0;
 
+	/**
+	 * A mapping. A level (deepness) of call to some trace identifier.
+	 */
 	Map<Integer, Integer> level2id = new HashMap<Integer, Integer>();
+	
+	/**
+	 * A mapping. A level (deepness) of call to some call.
+	 */
 	Map<Integer, String> level2call = new HashMap<Integer, String>();
 
 	private long traceCounterMemory = 0;
@@ -46,6 +53,9 @@ public class TraceFileReader3StoreTrace extends TraceFileReaderAbstract {
 		this.dataHolder = dataHolder;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected void beforeRead() {
 		session = HibernateUtility.getSessionFactory().getCurrentSession();
@@ -57,6 +67,12 @@ public class TraceFileReader3StoreTrace extends TraceFileReaderAbstract {
 	 */
 	@Override
 	protected void processString(String[] values) {
+
+		/*
+		 * Also we set here some additional references: 
+		 * - for a method's entry: parent's identifier.
+		 * - for a method's exit: an appropriate start (i.e. method's entry point) identifier.
+		 */
 
 		long threadID = Long.parseLong(values[2]);
 		if (!threadIdentifier.equals(threadID)) {

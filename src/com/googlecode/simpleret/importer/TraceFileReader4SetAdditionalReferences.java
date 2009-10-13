@@ -13,7 +13,13 @@ import com.googlecode.simpleret.database.HibernateUtility;
 import com.googlecode.simpleret.database.Trace;
 
 /**
- * Set additional references in the database.
+ * Set additional references in the database:
+ * 
+ * For a method's entry: an appropriate end (i.e. exit/return) identifier.
+ * For a method's exit: parent's identifier.
+ * Other references are set before.
+ * 
+ * P.S. It reads the whole list of trace calls in a reverse order.
  */
 public class TraceFileReader4SetAdditionalReferences extends
 		TraceImporterProgress {
@@ -22,7 +28,7 @@ public class TraceFileReader4SetAdditionalReferences extends
 			.getLogger(TraceFileReader4SetAdditionalReferences.class);
 
 	Map<Integer, Integer> level2id = new HashMap<Integer, Integer>();
-	Map<Integer, String> level2call = new HashMap<Integer, String>();
+	//Map<Integer, String> level2call = new HashMap<Integer, String>();
 
 	private static final int batchCounterValue = 100000;
 

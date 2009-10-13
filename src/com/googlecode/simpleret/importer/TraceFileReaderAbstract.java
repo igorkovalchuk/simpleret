@@ -15,9 +15,14 @@ abstract public class TraceFileReaderAbstract extends TraceImporterProgress {
 	static Logger abstractLogger = Logger
 			.getLogger(TraceFileReaderAbstract.class);
 
+	/**
+	 * We call this method before the reading a file.
+	 */
 	abstract protected void beforeRead();
 
 	/**
+	 * Analyze a current string that we have read from a file.
+	 * 
 	 * @param values ,
 	 *            where:<br>
 	 *            values[0] - id,<br>
@@ -29,6 +34,9 @@ abstract public class TraceFileReaderAbstract extends TraceImporterProgress {
 	 */
 	abstract protected void processString(String[] values);
 
+	/**
+	 * We call this method after the reading a file.
+	 */
 	abstract protected void afterRead(boolean errors);
 
 	/**

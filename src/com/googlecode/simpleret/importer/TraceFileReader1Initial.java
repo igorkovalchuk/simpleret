@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * First thing - we need to count number of calls in each Thread (if there are
+ * First thing - we need to count a number of calls in each Thread (if there are
  * several threads), so user can later choose the only one Thread to
  * analyze/visualize.
  */
