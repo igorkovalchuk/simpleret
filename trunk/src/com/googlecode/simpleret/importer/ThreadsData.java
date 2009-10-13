@@ -9,10 +9,20 @@ import java.util.TreeSet;
  */
 public class ThreadsData {
 
+	/**
+	 * A thread's identifier.
+	 */
 	private Long id = null;
+	
+	/**
+	 * Total number of trace calls.
+	 */
 	private long operations = 0;
-	private Set<String> data = new TreeSet<String>(); // TreeSet - sort calls
-														// in alphabetic order;
+	
+	/**
+	 * Names of trace calls in alphabetic order.
+	 */
+	private Set<String> data = new TreeSet<String>();
 
 	void addToTotalOperationsNumber() {
 		operations++;
@@ -29,6 +39,10 @@ public class ThreadsData {
 		return this.data.add(call);
 	}
 
+	/** 
+	 * @return
+	 * 		names of trace calls.
+	 */
 	Set<String> getOperations() {
 		return data;
 	}
@@ -41,6 +55,10 @@ public class ThreadsData {
 		this.id = id;
 	}
 
+	/**
+	 * @return
+	 * 		a string like this: Thread id = 1 ; call types: 5 ; calls: 1000
+	 */
 	String getAsString() {
 		return String.format("Thread id = %s ; call types: %s ; calls: %s", 
 			this.getThreadId(),

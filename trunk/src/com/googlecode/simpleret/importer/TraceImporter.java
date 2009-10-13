@@ -17,13 +17,14 @@ import com.googlecode.simpleret.Utilities;
 import com.googlecode.simpleret.viewer.FrameProgressBar;
 
 /**
- * 1. Show the dialog.<br>
- * 2. Select the file.<br>
- * 3. Show an information about threads stored in that file.<br>
- * 4. Select an identifier of the thread (if there are several threads).<br>
- * 5. Store vocabulary of calls in the database.<br>
- * 6. Store trace in the database.<br>
- * 7. Create additional references in the database.
+ * Import a trace from some file.<br>
+ * 
+ * 1. Select a file.<br>
+ * 2. Show an information about threads stored in that file.<br>
+ * 3. Select a thread (if there are several threads).<br>
+ * 4. Store a vocabulary of calls to the database.<br>
+ * 5. Store a trace to the database.<br>
+ * 6. Create additional references in the database.
  */
 public class TraceImporter {
 
@@ -59,6 +60,9 @@ public class TraceImporter {
 		this.store();
 	}
 
+	/**
+	 * Show a File Selection Dialog.
+	 */
 	private void selectFile() {
 
 		String path = Utilities.getApplicationDataPath();
@@ -79,6 +83,11 @@ public class TraceImporter {
 		}
 	}
 
+	/**
+	 * Loading a text trace file and detect if there are several threads have been recorded.<br>
+	 * 
+	 * Chose one of them if there are several threads.
+	 */
 	private void seekThreads() {
 		TraceFileReader1Initial reader = new TraceFileReader1Initial();
 		reader.startProcessing(fileName);
@@ -94,6 +103,9 @@ public class TraceImporter {
 		}
 	}
 
+	/**
+	 * Show a selection dialog to select one of threads.
+	 */
 	private void chooseThreadId(Map<Long, ThreadsData> threads) {
 
 		Map<Long, String> selection = new LinkedHashMap<Long, String>();
@@ -124,6 +136,11 @@ public class TraceImporter {
 		return;
 	}
 
+	/**
+	 * Store a vocabulary of calls to the database.<br>
+	 * Store a trace to the database.<br>
+	 * Create additional references in the database.
+	 */
 	private void store() {
 
 		FrameProgressBar progressBar = new FrameProgressBar(0,
