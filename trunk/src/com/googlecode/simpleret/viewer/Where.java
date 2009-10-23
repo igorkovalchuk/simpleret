@@ -72,7 +72,14 @@ public class Where {
 		where.append(" ");
 	}
 
-	
+	public void addClauseNonFolded() {
+		this.addClause("folding = false");
+	}
+
+	public void addClauseActiveRecords() {
+		this.addClause("dis = false");
+	}
+
 	public void addPlaceholder(String name, Object object) {
 		placeholders.put(name, object);
 	}
