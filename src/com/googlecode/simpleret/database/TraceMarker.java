@@ -79,11 +79,11 @@ public class TraceMarker {
 	}
 
 	/**
-	 * Colourise a list of signatures and other appropriate signatures
+	 * Colourise/delete/undelete a list of signatures and other appropriate signatures
 	 * defined by rules in DataFilter.
 	 */
-	public void colourise() {
-		if (signatures == null || colour == null || (! filter.isDefined()) ) {
+	public void mark() {
+		if (signatures == null || (filter.isMark() && colour == null) || (! filter.isDefined()) ) {
 			logger.warn("Useless call of colourise.");
 			return;
 		}
@@ -110,12 +110,15 @@ public class TraceMarker {
 		viewer.setEnabled(true);
 		viewer.grabFocus();
 		data.setChanged(true);
+		if (filter.isDelete() || filter.isUndelete()) {
+			data.setReinitialize(true);
+		}
 		viewer.showSelection();
 	}
 
 	/**
-	 * Colourise a particular signature.
-	 * Colourise it/its parents/its sub-elements (see DataFilter).
+	 * Colourise/delete/undelete a particular signature.
+	 * Colourise/delete/undelete it/its parents/its sub-elements (see DataFilter).
 	 * 
 	 * @param wordId
 	 * 			a signature' identifier.
@@ -128,7 +131,12 @@ public class TraceMarker {
 			logger.warn("Word identifier is null.");
 			return;
 		}
-		
+
+		if (filter.isDelete()) {
+			filter.setParents(false); // don't delete parent elements;
+			filter.setSubelements(true); // always delete sub-elements;
+		}
+
 		boolean isSubelements = filter.isSubelements();
 		boolean isParents = filter.isParents();
 		boolean isItself = filter.isItself();
@@ -180,10 +188,18 @@ public class TraceMarker {
 			while(j.hasNext()) {
 				sqlProgress++;
 				String sql = this.buildSqlRange(j.next());
-				hsql = "update Trace set colourMarker = :p1 where " + sql;
+				if (filter.isDelete()) {
+					hsql = "update Trace set disabled = true where " + sql;
+				} else if (filter.isUndelete()) {
+					hsql = "update Trace set disabled = false where " + sql;
+				} else {
+					hsql = "update Trace set colourMarker = :p1 where " + sql;
+				}
 				logger.debug("SQL (SUBELEMENTS): " + hsql);
 				query = data.getSession().createQuery(hsql);
-				query.setInteger("p1", colour);
+				if (filter.isMark()) {
+					query.setInteger("p1", colour);
+				}
 				int result = query.executeUpdate();
 				logger.debug("UPDATED: " + result);
 				progressBar.setString(this.wordsProgress + " / " + this.wordsNumber);
@@ -195,10 +211,18 @@ public class TraceMarker {
 			while(j.hasNext()) {
 				sqlProgress++;
 				String sql = this.buildSqlIN(j.next());
-				hsql = "update Trace set colourMarker = :p1 where id in ( " + sql + " )";
+				if (filter.isDelete()) {
+					hsql = "update Trace set disabled = true where id in ( " + sql + " )";
+				} else if (filter.isUndelete()) {
+					hsql = "update Trace set disabled = false where id in ( " + sql + " )";
+				} else {
+					hsql = "update Trace set colourMarker = :p1 where id in ( " + sql + " )";
+				}
 				logger.debug("SQL (ITSELF): " + hsql);
 				query = data.getSession().createQuery(hsql);
-				query.setInteger("p1", colour);
+				if (filter.isMark()) {
+					query.setInteger("p1", colour);
+				}
 				int result = query.executeUpdate();
 				logger.debug("UPDATED: " + result);
 				progressBar.setString(this.wordsProgress + " / " + this.wordsNumber);
@@ -211,10 +235,18 @@ public class TraceMarker {
 			while(j.hasNext()) {
 				sqlProgress++;
 				String sql = this.buildSqlIN(j.next());
-				hsql = "update Trace set colourMarker = :p1 where id in ( " + sql + " )";
+				if (filter.isDelete()) {
+					hsql = "update Trace set disabled = true where id in ( " + sql + " )";
+				} else if (filter.isUndelete()) {
+					hsql = "update Trace set disabled = false where id in ( " + sql + " )";
+				} else {
+					hsql = "update Trace set colourMarker = :p1 where id in ( " + sql + " )";
+				}
 				logger.debug("SQL (PARENTS): " + hsql);
 				query = data.getSession().createQuery(hsql);
-				query.setInteger("p1", colour);
+				if (filter.isMark()) {
+					query.setInteger("p1", colour);
+				}
 				int result = query.executeUpdate();
 				logger.debug("UPDATED: " + result);
 				progressBar.setString(this.wordsProgress + " / " + this.wordsNumber);
@@ -318,34 +350,83 @@ public class TraceMarker {
 	}
 
 	/**
-	 * Clean a particular colour in the database (set it to null).
+	 * Clean/delete/undelete records by a particular colour in the database
+	 * (Clean: set it to null. Delete: set disabled = true.)
 	 */
-	public void colourReset() {
+	public void singleColour() {
+
+		viewer.setEnabled(false);
+
 		Session session = data.getSession();
-		
+
 		Where where = new Where();
 		where.addClause("colourMarker = :" + Where.PLACEHOLDER_COLOUR);
 		where.addPlaceholder(Where.PLACEHOLDER_COLOUR, colour);
-		
-		String hsql = "update Trace set colourMarker = null " + where.toWhere(); 
-		
+
+		String hsql;
+		if (filter.isDelete()) {
+			hsql = "update Trace set disabled = true " + where.toWhere();
+		} else if (filter.isUndelete()) {
+			hsql = "update Trace set disabled = false " + where.toWhere();
+		} else {
+			hsql = "update Trace set colourMarker = null " + where.toWhere();
+		}
+
 		Query query = session.createQuery(hsql);
 		where.usePlaceholders(query);
 		int result = query.executeUpdate();
-		logger.debug("COLOUR RESET: " + result + " records.");
+
+		if (filter.isDelete()) {
+			logger.debug("COLOUR DELETE: " + result + " records.");
+		} else if (filter.isUndelete()) {
+			logger.debug("COLOUR UNDELETE: " + result + " records.");
+		} else {
+			logger.debug("COLOUR RESET: " + result + " records.");
+		}
+
 		done();
+
+		viewer.setEnabled(true);
+		viewer.grabFocus();
+		data.setChanged(true);
+		if (filter.isDelete() || filter.isUndelete()) {
+			data.setReinitialize(true);
+		}
+		viewer.showSelection();
 	}
 
 	/**
 	 * Set all colours in the database to null.
 	 */
-	public void allColoursReset() {
-		Session session = data.getSession();				
-		String hsql = "update Trace set colourMarker = null where colourMarker is not null"; 
+	public void allColours() {
+
+		viewer.setEnabled(false);
+
+		Session session = data.getSession();
+		String hsql;
+
+		if (filter.isDelete()) {
+			hsql = "update Trace set disabled = true where disabled = false";
+		} else if (filter.isUndelete()) {
+			hsql = "update Trace set disabled = false where disabled = true";
+		} else {
+			hsql = "update Trace set colourMarker = null where colourMarker is not null";
+		}
+
 		Query query = session.createQuery(hsql);
 		int result = query.executeUpdate();
-		logger.debug("COLOUR RESET: " + result + " records.");
+
+		logger.debug("ALL COLOUR RESET/DELETE/UNDELETE: " + result + " records.");
+
 		done();
+
+		viewer.setEnabled(true);
+		viewer.grabFocus();
+		data.setChanged(true);
+		if (filter.isDelete() || filter.isUndelete()) {
+			data.setReinitialize(true);
+		}
+		viewer.showSelection();
 	}
 
 	/**

@@ -49,6 +49,16 @@ public class Trace {
 
 	private Integer colourMarker = null;
 
+	/**
+	 * Folding for this record on/off.
+	 */
+	private boolean folding = false;
+
+	/**
+	 * Record disabled (i.e. marked as deleted in the database).
+	 */
+	private boolean disabled = false;
+
 	// private final static String NBSP1 = Constants.NBSP;
 	// private final static String NBSP2 = Constants.NBSP + Constants.NBSP;;
 
@@ -320,5 +330,21 @@ public class Trace {
 		}
 		throw new RuntimeException("Can't find a class name for [" +  signature + "]");
 	}
-	
+
+	public boolean isFolding() {
+		return folding;
+	}
+
+	public void setFolding(boolean folding) {
+		this.folding = folding;
+	}
+
+	public boolean isDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(boolean disabled) {
+		this.disabled = disabled;
+	}
+
 }

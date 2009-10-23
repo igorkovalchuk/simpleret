@@ -20,7 +20,9 @@
 		<property name="return" column="ret"/>
 		<property name="level" column="lev"/>
 		<property name="colourMarker" column="colour"/>
-		
+		<property name="folding" column="fold"/>
+		<property name="disabled" column="dis"/>
+
     </class>
 
 </hibernate-mapping>

@@ -58,6 +58,8 @@ public class Viewer extends JEditorPane {
 	private void selectionInitializeLoadData() {
 		if (data.isReinitialize()) {
 			Where where = new Where();
+			where.addClauseActiveRecords();
+			where.addClauseNonFolded();
 			where.createBaseClause(data);
 
 			String hsql = "select count(*) from Trace trace" + where.toWhere();

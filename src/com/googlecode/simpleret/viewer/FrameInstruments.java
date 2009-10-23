@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JColorChooser;
@@ -17,6 +18,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JSeparator;
 
 import org.apache.log4j.Logger;
 
@@ -48,16 +51,34 @@ public class FrameInstruments {
 		itselfJCB.setSelected(true);
 
 		final JCheckBox parentsJCB = new JCheckBox();
-		parentsJCB.setSelected(true);
+		parentsJCB.setSelected(false);
 
 		final JCheckBox subelementsJCB = new JCheckBox();
-		subelementsJCB.setSelected(true);
+		subelementsJCB.setSelected(false);
 
 		JLabel itselfJL = new JLabel("Include current element");
 		JLabel parentsJL = new JLabel("Include parents");
 		JLabel subelementsJL = new JLabel("Include sub-elements");
 
-		JButton markJB = new JButton("Mark");
+		final JRadioButton markJRB = new JRadioButton();
+		markJRB.setSelected(true);
+
+		final JRadioButton deleteJRB = new JRadioButton();
+		deleteJRB.setSelected(false);
+
+		final JRadioButton undeleteJRB = new JRadioButton();
+		undeleteJRB.setSelected(false);
+
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(markJRB);
+		bg.add(deleteJRB);
+		bg.add(undeleteJRB);
+
+		JLabel markJL = new JLabel("Mark");
+		JLabel deleteJL = new JLabel("Delete");
+		JLabel undeleteJL = new JLabel("Undelete");
+
+		JButton markJB = new JButton("Signatures");
 		markJB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
 				Set<String> list = getSignatures(data);
@@ -65,15 +86,47 @@ public class FrameInstruments {
 					logger.warn("An empty list of signatures.");
 					return;
 				}
-				Color colour = JColorChooser.showDialog(frame, "Colours", data
-						.getTakenColourAsColour());
-				if (colour == null) {
-					logger.warn("A colour have not been selected.");
-					return;
-				}
+
+				dataFilter.setMode(deleteJRB.isSelected(), undeleteJRB.isSelected());
+
 				dataFilter.setItself(itselfJCB.isSelected());
 				dataFilter.setParents(parentsJCB.isSelected());
 				dataFilter.setSubelements(subelementsJCB.isSelected());
+
+				if (dataFilter.isDelete()) {
+					String warning = "";
+					if (dataFilter.isParents()) {
+						warning = "You can't delete parent elements.\n";
+					}
+					if (! dataFilter.isSubelements()) {
+						warning += "You have to delete subelements too.";
+					}
+					if (! warning.equals("")) {
+						JOptionPane.showMessageDialog(frame,
+							warning, "", JOptionPane.WARNING_MESSAGE);
+						return;
+					}
+				}
+
+				int result = JOptionPane.showConfirmDialog(frame,
+					dataFilter.getMode("Mark") + " a list of signatures N " + signatureId + " ?", "",
+					JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+				if (result != JOptionPane.OK_OPTION) {
+					return;
+				}
+
+				Color colour = null;
+
+				if (dataFilter.isMark()) {
+					colour = JColorChooser.showDialog(
+							frame, "Colours", data.getTakenColourAsColour());
+					if (colour == null) {
+						logger.warn("A colour have not been selected.");
+						return;
+					}
+				}
+
 				final TraceMarker marker = new TraceMarker(data, dataFilter,
 						signatureId, colour, viewer);
 
@@ -81,7 +134,7 @@ public class FrameInstruments {
 
 				Thread c = new Thread(new Runnable() {
 					public void run() {
-						marker.colourise();
+						marker.mark();
 					}
 				});
 
@@ -98,33 +151,47 @@ public class FrameInstruments {
 			}
 		});
 
-		JButton cleanJB = new JButton("Clean colour");
+		JButton cleanJB = new JButton("By a selected color");
 		cleanJB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+
 				Color colour = JColorChooser.showDialog(frame, "Colours", data
 						.getTakenColourAsColour());
 				if (colour == null) {
 					logger.warn("A colour have not been selected.");
 					return;
 				}
-				TraceMarker marker = new TraceMarker(data, null, null, colour, viewer);
-				marker.colourReset();
+
+				dataFilter.setMode(deleteJRB.isSelected(), undeleteJRB.isSelected());
+
+				int result = JOptionPane.showConfirmDialog(frame,
+					dataFilter.getMode("Clean") + " records of the selected color ?", "",
+					JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+				if (result != JOptionPane.OK_OPTION) {
+					return;
+				}
+
+				TraceMarker marker = new TraceMarker(data, dataFilter, null, colour, viewer);
+				marker.singleColour();
 				frame.dispose();
 			}
 		});
 
-		JButton cleanAllJB = new JButton("Clean all");
+		JButton cleanAllJB = new JButton("All records");
 		cleanAllJB.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
+				dataFilter.setMode(deleteJRB.isSelected(), undeleteJRB.isSelected());
 				int result = JOptionPane.showConfirmDialog(frame,
-						"Clean all colours ?", "",
-						JOptionPane.OK_CANCEL_OPTION,
-						JOptionPane.WARNING_MESSAGE);
-				if (result == JOptionPane.OK_OPTION) {
-					TraceMarker marker = new TraceMarker(data, null, null, null, viewer);
-					marker.allColoursReset();
-					frame.dispose();
+					dataFilter.getMode("Clean all colors of") + " all records.", "",
+					JOptionPane.OK_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+				if (result != JOptionPane.OK_OPTION) {
+					return;
 				}
+				TraceMarker marker = new TraceMarker(data, dataFilter, null, null, viewer);
+				marker.allColours();
+				frame.dispose();
 			}
 		});
 
@@ -145,38 +212,76 @@ public class FrameInstruments {
 		Insets insets = new Insets(3, 3, 3, 3);
 		constraints.insets = insets;
 
-		constraints.gridx = 1;
+		constraints.gridx = 2;
+		constraints.gridy = 2;
+		layout.setConstraints(markJRB, constraints);
+		frame.add(markJRB);
+
+		constraints.gridx = 2;
+		constraints.gridy = 3;
+		layout.setConstraints(deleteJRB, constraints);
+		frame.add(deleteJRB);
+
+		constraints.gridx = 2;
+		constraints.gridy = 4;
+		layout.setConstraints(undeleteJRB, constraints);
+		frame.add(undeleteJRB);
+
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 3;
+		constraints.gridy = 2;
+		layout.setConstraints(markJL, constraints);
+		frame.add(markJL);
+
+		constraints.gridx = 3;
+		constraints.gridy = 3;
+		layout.setConstraints(deleteJL, constraints);
+		frame.add(deleteJL);
+
+		constraints.gridx = 3;
+		constraints.gridy = 4;
+		layout.setConstraints(undeleteJL, constraints);
+		frame.add(undeleteJL);
+
+		constraints.gridx = 4;
 		constraints.gridy = 2;
 		layout.setConstraints(itselfJCB, constraints);
 		frame.add(itselfJCB);
 
-		constraints.gridx = 1;
+		constraints.gridx = 4;
 		constraints.gridy = 3;
 		layout.setConstraints(parentsJCB, constraints);
 		frame.add(parentsJCB);
 
-		constraints.gridx = 1;
+		constraints.gridx = 4;
 		constraints.gridy = 4;
 		layout.setConstraints(subelementsJCB, constraints);
 		frame.add(subelementsJCB);
 
-		constraints.gridx = 2;
+		constraints.gridx = 5;
 		constraints.gridy = 2;
 		constraints.anchor = GridBagConstraints.WEST;
 		layout.setConstraints(itselfJL, constraints);
 		frame.add(itselfJL);
 
-		constraints.gridx = 2;
+		constraints.gridx = 5;
 		constraints.gridy = 3;
-		constraints.anchor = GridBagConstraints.WEST;
 		layout.setConstraints(parentsJL, constraints);
 		frame.add(parentsJL);
 
-		constraints.gridx = 2;
+		constraints.gridx = 5;
 		constraints.gridy = 4;
-		constraints.anchor = GridBagConstraints.WEST;
 		layout.setConstraints(subelementsJL, constraints);
 		frame.add(subelementsJL);
+
+		JSeparator js1 = new JSeparator();
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.gridwidth = 6;
+		layout.setConstraints(js1, constraints);
+		js1.setPreferredSize(new Dimension(550, 5));
+		frame.add(js1);
+		constraints.gridwidth = 1;
 
 		constraints.gridx = 0;
 		constraints.gridy = 0;
@@ -192,35 +297,56 @@ public class FrameInstruments {
 		constraints.gridwidth = 1;
 		signaturesJCB.setFont(font);
 
-		constraints.gridx = 3;
-		constraints.gridy = 0;
+		JSeparator js2 = new JSeparator();
+		constraints.gridx = 0;
+		constraints.gridy = 5;
+		constraints.gridwidth = 6;
+		layout.setConstraints(js2, constraints);
+		js2.setPreferredSize(new Dimension(550, 5));
+		frame.add(js2);
+		constraints.gridwidth = 1;
+
+		constraints.gridx = 2;
+		constraints.gridy = 6;
+		constraints.gridwidth = 2;
 		cleanJB.setPreferredSize(new Dimension(150, 40));
 		layout.setConstraints(cleanJB, constraints);
 		frame.add(cleanJB);
+		constraints.gridwidth = 1;
 
-		constraints.gridx = 3;
-		constraints.gridy = 1;
+		constraints.gridx = 4;
+		constraints.gridy = 6;
+		constraints.gridwidth = 2;
 		cleanAllJB.setPreferredSize(new Dimension(150, 40));
 		layout.setConstraints(cleanAllJB, constraints);
 		frame.add(cleanAllJB);
+		constraints.gridwidth = 1;
 
 		constraints.gridx = 1;
-		constraints.gridy = 5;
-		constraints.gridwidth = 2;
+		constraints.gridy = 6;
 		markJB.setPreferredSize(new Dimension(150, 40));
 		layout.setConstraints(markJB, constraints);
 		frame.add(markJB);
+
+		JSeparator js3 = new JSeparator();
+		constraints.gridx = 0;
+		constraints.gridy = 7;
+		constraints.gridwidth = 6;
+		layout.setConstraints(js3, constraints);
+		js3.setPreferredSize(new Dimension(550, 5));
+		frame.add(js3);
 		constraints.gridwidth = 1;
 
-		constraints.gridx = 3;
-		constraints.gridy = 5;
+		constraints.gridx = 4;
+		constraints.gridy = 8;
 		constraints.gridwidth = 2;
 		cancelJB.setPreferredSize(new Dimension(150, 40));
 		layout.setConstraints(cancelJB, constraints);
 		frame.add(cancelJB);
 		constraints.gridwidth = 1;
 
-		frame.setPreferredSize(new Dimension(500, 350));
+		frame.setPreferredSize(new Dimension(600, 450));
+		frame.setResizable(false);
 		frame.pack();
 		frame.setLocation(200, 150);
 		frame.setLayout(layout);
