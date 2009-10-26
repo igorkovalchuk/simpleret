@@ -47,9 +47,6 @@ abstract public class TraceFileReaderAbstract extends TraceImporterProgress {
 	 * @param fileName
 	 */
 	protected void startProcessing(String fileName) {
-
-		// abstractLogger.info("Reading file: " + fileName);
-
 		File fileToRead = new File(fileName);
 
 		if (!fileToRead.exists()) {
@@ -57,16 +54,31 @@ abstract public class TraceFileReaderAbstract extends TraceImporterProgress {
 			return;
 		}
 
+		long lengthOfFile = fileToRead.length();
+
+		try {
+			FileReader fr = new FileReader(fileToRead);
+			BufferedReader in = new BufferedReader(fr);
+
+			this.startProcessing(in, lengthOfFile);
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			abstractLogger.error(e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected void startProcessing(BufferedReader in, long size) {
+
 		// BEFORE READ THE FILE
 		this.beforeRead();
 
 		boolean errors = false;
 
 		try {
-			long size = fileToRead.length();
 			long bytes = 0;
-			FileReader fr = new FileReader(fileToRead);
-			BufferedReader in = new BufferedReader(fr);
+
 			String str;
 			while ((str = in.readLine()) != null) {
 				bytes += str.length();
