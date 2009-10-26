@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,7 +51,7 @@ public class Configuration {
 	private String outputFileName = null;
 	private File outputFile;
 
-	private BufferedWriter fileWriter = null;
+	private Writer fileWriter = null;
 
 	// last modification time of configuration file.
 	private long modificationTime = -1;
@@ -61,7 +63,11 @@ public class Configuration {
 	public void setInputFile(String path) {
 		inputFile = new File(base + path);
 	}
-		
+
+	private boolean testing = false;
+
+	private StringBuffer testingResult = new StringBuffer();
+
 	public void initialize() {
 
 		synchronized (Configuration.class) {
@@ -156,8 +162,7 @@ public class Configuration {
 						this.openFile();
 
 						fileWriter.write("# {enabled}{"
-								+ (new Date()).toString() + "}");
-						fileWriter.newLine();
+								+ (new Date()).toString() + "}\n");
 						fileWriter.flush();
 						enabled = true;
 					}
@@ -165,8 +170,7 @@ public class Configuration {
 					if (enabled) {
 						logger.info("Trace recording has been disabled.");
 						fileWriter.write("{# disabled}{"
-								+ (new Date()).toString() + "}");
-						fileWriter.newLine();
+								+ (new Date()).toString() + "}\n");
 						fileWriter.flush();
 						this.closeFile();
 						enabled = false;
@@ -256,18 +260,23 @@ public class Configuration {
 			if (!outputFile.exists()) {
 				outputFile.createNewFile();
 			}
-			fileWriter = new BufferedWriter(new FileWriter(
+			if (testing) {
+				fileWriter = new StringWriter();
+			} else {
+				fileWriter = new BufferedWriter(new FileWriter(
 					outputFile, true));
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	private void closeFile() {
 		try {
-			if (fileWriter != null)
+			if (fileWriter != null) {
 				fileWriter.close();
 				fileWriter = null;
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -278,8 +287,12 @@ public class Configuration {
 		return (String []) initial.toArray(arrayOfStrings);
 	}
 
-	public BufferedWriter getFileWriter() {
+	public Writer getFileWriter() {
 		return fileWriter;
+	}
+
+	public void setTesting(boolean testing) {
+		this.testing = testing;
 	}
 
 }

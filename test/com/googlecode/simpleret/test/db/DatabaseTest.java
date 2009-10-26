@@ -1,26 +1,31 @@
-package com.googlecode.simpleret.test;
+package com.googlecode.simpleret.test.db;
 
 import org.hibernate.classic.Session;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import com.googlecode.simpleret.database.HibernateUtility;
 import com.googlecode.simpleret.database.Trace;
 import com.googlecode.simpleret.database.Vocabulary;
 
-import junit.framework.TestCase;
-
-public class DatabaseTest extends TestCase {
+public class DatabaseTest {
 
 	private static Session session = null;
 
-	protected void setUp() throws Exception {
+	@BeforeClass
+	public static void before() throws Exception {
 		session = HibernateUtility.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 	}
 
-	protected void tearDown() throws Exception {
+	@AfterClass
+	public static void after() throws Exception {
 		session.getTransaction().rollback();
 	}
 
+	@Test
 	public void test001Vocabulary() {
 		Vocabulary object = new Vocabulary();
 		object.setWord("com.googlecode.Test");
@@ -28,6 +33,7 @@ public class DatabaseTest extends TestCase {
 		session.flush();
 	}
 
+	@Test
 	public void test002Trace() {
 		Trace object = new Trace();
 		object.setId(100);

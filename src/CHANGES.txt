@@ -2,6 +2,9 @@
 Please see
 	http://code.google.com/p/simpleret/source/list (list of changes)
 
+September 26
+	Using JUnit 4.
+
 September 23
 	JPDA trace recorder - development is in progress.
 
