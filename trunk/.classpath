@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="JUNIT_HOME/junit.jar"/>
 	<classpathentry kind="lib" path="lib/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/asm.jar"/>
 	<classpathentry kind="lib" path="lib/asm-attrs.jar"/>
@@ -10,7 +10,7 @@
 	<classpathentry kind="lib" path="lib/commons-collections-2.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate3.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate3.jar" sourcepath="C:/Projects/hibernate-3.2/src"/>
 	<classpathentry kind="lib" path="lib/hsqldb.jar"/>
 	<classpathentry kind="lib" path="lib/jta.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.11.jar"/>
@@ -23,5 +23,9 @@
 	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/net.java.amateras.umleditor.java_1.3.1.jar"/>
 	<classpathentry kind="lib" path="lib/xstream-1.1.2.jar"/>
 	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.eclipse.swt.win32.win32.x86_3.3.1.v3346i.jar"/>
+	<classpathentry kind="lib" path="C:/Personal/Archive/dbunit-2.4.6-prj/dbunit-2.4.6.jar"/>
+	<classpathentry kind="lib" path="lib/easymockclassextension.jar"/>
+	<classpathentry kind="lib" path="lib/easymock-2.5.2.jar"/>
+	<classpathentry kind="var" path="ECLIPSE_HOME/plugins/org.junit4_4.3.1/junit.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
