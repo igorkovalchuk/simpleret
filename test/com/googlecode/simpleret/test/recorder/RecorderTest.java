@@ -1,5 +1,7 @@
 package com.googlecode.simpleret.test.recorder;
 
+import java.io.BufferedReader;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -7,6 +9,7 @@ import static org.junit.Assert.*;
 import com.googlecode.simpleret.recorder.Configuration;
 import com.googlecode.simpleret.recorder.Recorder;
 import com.googlecode.simpleret.recorder.Signature;
+import com.googlecode.simpleret.test.TestUtilities;
 
 public class RecorderTest {
 
@@ -14,7 +17,8 @@ public class RecorderTest {
 	public void testTraceRecorder() throws Exception {
 
 		Configuration c = new Configuration();
-		c.setInputFile("trace.cfg.test.txt");
+		BufferedReader reader = TestUtilities.getResurceReader("/files/cfg/trace.cfg.test.txt");
+		c.setInputReader(reader);
 		c.setTesting(true);
 		c.initialize();
 

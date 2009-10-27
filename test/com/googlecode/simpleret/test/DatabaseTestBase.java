@@ -1,0 +1,20 @@
+package com.googlecode.simpleret.test;
+
+import org.hibernate.cfg.Configuration;
+import org.junit.BeforeClass;
+
+import com.googlecode.simpleret.database.HibernateUtility;
+
+/**
+ * Use this as a base class for any of your DBUnit tests.
+ */
+abstract public class DatabaseTestBase {
+
+	@BeforeClass
+	public static void beforeClass() throws Exception {
+		Configuration cnf = TestUtilities.getConfiguration(All.CONFIGURATION);
+		cnf.setProperty("hibernate.hbm2ddl.auto", "create");
+		HibernateUtility.getSessionFactory(cnf).getCurrentSession();
+	}
+
+}

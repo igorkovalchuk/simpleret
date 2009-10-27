@@ -1,10 +1,6 @@
-package com.googlecode.simpleret.importer;
+package com.googlecode.simpleret.test.importer;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +10,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import com.googlecode.simpleret.importer.TraceFileReaderAbstract;
+import com.googlecode.simpleret.test.TestUtilities;
 
 public class TraceFileReaderAbstractTest {
 
@@ -37,19 +34,10 @@ public class TraceFileReaderAbstractTest {
 
 		};
 
-		String resource = "/files/test-trace-1.txt";
+		BufferedReader br = TestUtilities
+				.getResurceReader("/files/test-trace-1.txt");
 
-		URL url = TraceFileReaderAbstract.class.getResource(resource);
-		String path = url.getPath();
-		File file = new File(path);
-		long size = file.length();
-		size = size != 0 ? size : 1; // a dummy value;
-
-		InputStream is = TraceFileReaderAbstract.class
-				.getResourceAsStream(resource);
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader br = new BufferedReader(isr);
-		reader.startProcessing(br, size);
+		reader.startProcessing(br);
 
 		assertEquals(26, list.size());
 

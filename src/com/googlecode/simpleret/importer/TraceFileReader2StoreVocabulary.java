@@ -23,7 +23,7 @@ public class TraceFileReader2StoreVocabulary extends TraceFileReaderAbstract {
 
 	ThreadsData td = new ThreadsData();
 
-	TraceFileReader2StoreVocabulary(Long threadID) {
+	public TraceFileReader2StoreVocabulary(Long threadID) {
 		super();
 		if (threadID == null)
 			throw new RuntimeException("Thread identifier.");
@@ -68,6 +68,7 @@ public class TraceFileReader2StoreVocabulary extends TraceFileReaderAbstract {
 	protected void afterRead(boolean errors) {
 
 		if (errors) {
+			// TODO Change this to something meaningful.
 			return;
 		}
 
