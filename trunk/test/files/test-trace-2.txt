@@ -1,0 +1,6 @@
+# ID    CALL_DEPTH    THREAD_ID    TIME    SIGNATURE
+
+1	1	15	1	  com.googlecode.simpleret.example.Main.main()
+4	2	15	1	    com.googlecode.simpleret.example.Alpha.start()
+23	2	15	1	    com.googlecode.simpleret.example.Alpha.<<return>>()
+24	1	15	1	  com.googlecode.simpleret.example.Main.<<return>>()

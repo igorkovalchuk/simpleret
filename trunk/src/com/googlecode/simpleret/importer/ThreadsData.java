@@ -59,7 +59,7 @@ public class ThreadsData {
 	 * @return
 	 * 		a string like this: Thread id = 1 ; call types: 5 ; calls: 1000
 	 */
-	String getAsString() {
+	public String getAsString() {
 		return String.format("Thread id = %s ; call types: %s ; calls: %s", 
 			this.getThreadId(),
 			this.getOperations().size(),

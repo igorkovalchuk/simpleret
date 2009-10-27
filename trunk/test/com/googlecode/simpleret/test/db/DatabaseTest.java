@@ -2,31 +2,33 @@ package com.googlecode.simpleret.test.db;
 
 import org.hibernate.classic.Session;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.googlecode.simpleret.database.HibernateUtility;
 import com.googlecode.simpleret.database.Trace;
 import com.googlecode.simpleret.database.Vocabulary;
+import com.googlecode.simpleret.test.DatabaseTestBase;
 
-public class DatabaseTest {
+public class DatabaseTest extends DatabaseTestBase {
 
 	private static Session session = null;
 
-	@BeforeClass
-	public static void before() throws Exception {
+	@Before
+	public void before() throws Exception {
 		session = HibernateUtility.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 	}
 
-	@AfterClass
-	public static void after() throws Exception {
+	@After
+	public void after() throws Exception {
 		session.getTransaction().rollback();
 	}
 
 	@Test
 	public void test001Vocabulary() {
+		session = HibernateUtility.getSessionFactory().getCurrentSession();
 		Vocabulary object = new Vocabulary();
 		object.setWord("com.googlecode.Test");
 		session.save(object);

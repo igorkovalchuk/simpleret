@@ -69,7 +69,14 @@ abstract public class TraceFileReaderAbstract extends TraceImporterProgress {
 		}
 	}
 
-	protected void startProcessing(BufferedReader in, long size) {
+	/**
+	 * For jUnit tests only.
+	 */
+	public void startProcessing(BufferedReader in) {
+		startProcessing(in, 0);
+	}
+
+	private void startProcessing(BufferedReader in, long size) {
 
 		// BEFORE READ THE FILE
 		this.beforeRead();

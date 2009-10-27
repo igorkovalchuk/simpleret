@@ -4,7 +4,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.googlecode.simpleret.importer.TraceFileReaderAbstractTest;
+import com.googlecode.simpleret.test.importer.TraceFileReaderAbstractTest;
 import com.googlecode.simpleret.test.db.DatabaseTest;
 import com.googlecode.simpleret.test.recorder.RecorderTest;
 
@@ -16,5 +16,8 @@ import com.googlecode.simpleret.test.recorder.RecorderTest;
 			TraceFileReaderAbstractTest.class
 		}
 )
-public class All {	
+public class All extends DatabaseTestSuiteBase {
+
+	public static final String CONFIGURATION = "/hibernate-test";
+
 }

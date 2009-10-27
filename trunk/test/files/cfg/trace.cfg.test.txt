@@ -1,0 +1,14 @@
+
+[enabled]
+
+# comments1
+
+# comments2
+
+#com.example.Alpha.three
+#^.*rees$
+
+#[display]
+
+[include]:com.googlecode.*
+[file]:trace.output.test3.txt

@@ -16,25 +16,54 @@ public class HibernateUtility {
 	static Logger logger = 
 		Logger.getLogger(HibernateUtility.class.getPackage().getName());
 
-	private static final SessionFactory sessionFactory;
+	private static SessionFactory sessionFactory;
 
-	static {
-		try {
-			// Create the SessionFactory from hibernate.cfg.xml
-			sessionFactory = new Configuration().configure()
-					.buildSessionFactory();
-		} catch (Throwable ex) {
-			// Make sure you log the exception, as it might be swallowed
-			logger.error("Initial SessionFactory creation failed ... " + ex);
-			throw new ExceptionInInitializerError(ex);
+	/**
+	 * Get SessionFactory. Default Configuration - hibernate.cfg.xml
+	 * 
+	 * @return - object of org.hibernate.SessionFactory
+	 */
+	public static synchronized SessionFactory getSessionFactory() {
+
+		if (sessionFactory == null) {
+			try {
+				// Create the SessionFactory from hibernate.cfg.xml
+				Configuration cnf = new Configuration();
+				cnf.configure();
+				sessionFactory = cnf.buildSessionFactory();
+			} catch (Throwable ex) {
+				// Make sure you log the exception, as it might be swallowed
+				logger.error("Initial SessionFactory creation failed ... " + ex);
+				throw new ExceptionInInitializerError(ex);
+			}
 		}
+
+		return sessionFactory;
 	}
 
 	/**
+	 * Get SessionFactory. Custom Configuration.
 	 * @return - object of org.hibernate.SessionFactory
 	 */
-	public static SessionFactory getSessionFactory() {
+	public static synchronized SessionFactory getSessionFactory(Configuration configuration) {
+
+		if (sessionFactory == null) {
+			try {
+				sessionFactory = configuration.buildSessionFactory();
+			} catch (Throwable ex) {
+				logger.error("Initial SessionFactory creation failed ... " + ex);
+				throw new ExceptionInInitializerError(ex);
+			}
+		}
+
 		return sessionFactory;
+	}
+
+	/**
+	 * Set SessionFactory singleton = null.
+	 */
+	public static synchronized void reset() {
+		sessionFactory = null;
 	}
 
 }

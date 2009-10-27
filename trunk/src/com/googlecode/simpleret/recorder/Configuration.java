@@ -3,6 +3,7 @@ package com.googlecode.simpleret.recorder;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -47,6 +48,7 @@ public class Configuration {
 
 	private String base = null;
 	private File inputFile;
+	private BufferedReader reader;
 	
 	private String outputFileName = null;
 	private File outputFile;
@@ -64,25 +66,48 @@ public class Configuration {
 		inputFile = new File(base + path);
 	}
 
+	/**
+	 * Especially for tests. Use it instead of setInputFile(String)
+	 */
+	public void setInputReader(BufferedReader reader) {
+		this.reader = reader;
+	}
+
 	private boolean testing = false;
 
-	private StringBuffer testingResult = new StringBuffer();
+	/**
+	 * @return
+	 * 		BufferedReader or null if we don't need an initialization.
+	 * 
+	 * @throws FileNotFoundException
+	 */
+	private BufferedReader getFileReader() throws FileNotFoundException {
+		BufferedReader result = null;
+		if (testing) {
+			result = reader;
+		} else {
+			long lastModified = inputFile.lastModified();
+			if (lastModified != modificationTime) {
+				modificationTime = lastModified;
+				result = new BufferedReader(new FileReader(inputFile));
+			}
+		}
+		return result;
+	}
+
 
 	public void initialize() {
 
 		synchronized (Configuration.class) {
 
 			try {
-				long lastModified = inputFile.lastModified();
-				if (lastModified == modificationTime) {
+
+				BufferedReader in = getFileReader();
+				if (in == null) {
 					return;
 				}
-				modificationTime = lastModified;
 
-				logger.debug("initialization");
-
-				BufferedReader in = new BufferedReader(
-						new FileReader(inputFile));
+				logger.debug("Trace recorder initialization");
 
 				String string;
 
@@ -146,6 +171,10 @@ public class Configuration {
 				}
 
 				in.close();
+				if (testing) {
+					// initialize only once;
+					reader = null;
+				}
 
 				if (signatures.size() == 0) {
 					signatures = null;
@@ -255,14 +284,15 @@ public class Configuration {
 	}
 
 	private void openFile() {
+
 		try {
-			// Create a new file, or use existing;
-			if (!outputFile.exists()) {
-				outputFile.createNewFile();
-			}
 			if (testing) {
 				fileWriter = new StringWriter();
 			} else {
+				// Create a new file, or use existing;
+				if (!outputFile.exists()) {
+					outputFile.createNewFile();
+				}
 				fileWriter = new BufferedWriter(new FileWriter(
 					outputFile, true));
 			}
