@@ -7,6 +7,7 @@ import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.junit.After;
 import org.junit.Before;
@@ -46,18 +47,15 @@ public class TraceFileReader2StoreVocabularyTest extends DatabaseTestBase {
 		reader.startProcessing(br);
 
 		IDataSet actualDS = db.getConnection().createDataSet();
-		ITable actualTable = actualDS.getTable("VY");
 
 		IDataSet expectedDS = new FlatXmlDataSet(
 				new StringReader(
 "<dataset>"
-+ "<VY WORD_ID=\"1\" WORD=\"com.googlecode.simpleret.example.Alpha.start()\"/>"
-+ "<VY WORD_ID=\"2\" WORD=\"com.googlecode.simpleret.example.Main.main()\"/>"
++ "<VY WORD=\"com.googlecode.simpleret.example.Alpha.start()\"/>"
++ "<VY WORD=\"com.googlecode.simpleret.example.Main.main()\"/>"
 + "</dataset>"));
 
-		ITable expectedTable = expectedDS.getTable("VY");
-
-		Assertion.assertEquals(expectedTable, actualTable);
+		Assertion.assertEqualsIgnoreCols(expectedDS, actualDS,"VY",new String[]{"WORD_ID"});
 	}
 
 }

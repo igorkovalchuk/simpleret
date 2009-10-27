@@ -4,6 +4,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import com.googlecode.simpleret.test.importer.TraceFileReader1InitialTest;
+import com.googlecode.simpleret.test.importer.TraceFileReader2StoreVocabularyTest;
 import com.googlecode.simpleret.test.importer.TraceFileReaderAbstractTest;
 import com.googlecode.simpleret.test.db.DatabaseTest;
 import com.googlecode.simpleret.test.recorder.RecorderTest;
@@ -13,7 +15,9 @@ import com.googlecode.simpleret.test.recorder.RecorderTest;
 		{
 			RecorderTest.class,
 			DatabaseTest.class,
-			TraceFileReaderAbstractTest.class
+			TraceFileReaderAbstractTest.class,
+			TraceFileReader1InitialTest.class,
+			TraceFileReader2StoreVocabularyTest.class
 		}
 )
 public class All extends DatabaseTestSuiteBase {
