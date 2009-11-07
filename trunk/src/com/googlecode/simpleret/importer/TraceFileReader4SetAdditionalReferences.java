@@ -61,28 +61,7 @@ public class TraceFileReader4SetAdditionalReferences extends
 			q.setMaxResults(batchCounter);
 
 			List<Trace> list = q.list();
-			int lastIndex = list.size() - 1;
-			for (int i = lastIndex; i >= 0; i--) {
-				Trace t = list.get(i);
-				Integer level = t.getLevel();
-				Integer thisID = t.getId();
-				boolean ret = t.isReturn();
-				if (!ret) {
-					Integer endID = dataHolder.startID2endID.get(thisID);
-					if (endID != null) {
-						t.setEndId(endID);
-					}
-				} else {
-					// 'return'
-					this.level2id.put(level, thisID);
-					Integer previousLevelFromEnd = level - 1;
-					Integer parentIDFromEnd = this.level2id
-							.get(previousLevelFromEnd);
-					if (parentIDFromEnd != null) {
-						t.setParentId(parentIDFromEnd);
-					}
-				}
-			}
+			this.setReferences(dataHolder, list);
 
 			if (firstResult == 0)
 				break;
@@ -119,6 +98,35 @@ public class TraceFileReader4SetAdditionalReferences extends
 
 		session.getTransaction().commit();
 
+	}
+
+	private void setReferences(ImportDataHolder dataHolder, List<Trace> list) {
+		int lastIndex = list.size() - 1;
+		for (int i = lastIndex; i >= 0; i--) {
+			Trace t = list.get(i);
+			this.setReferences(dataHolder, t);
+		}
+	}
+
+	private void setReferences(ImportDataHolder dataHolder, Trace t) {
+		Integer level = t.getLevel();
+		Integer thisID = t.getId();
+		boolean ret = t.isReturn();
+		if (!ret) {
+			Integer endID = dataHolder.startID2endID.get(thisID);
+			if (endID != null) {
+				t.setEndId(endID);
+			}
+		} else {
+			// 'return'
+			this.level2id.put(level, thisID);
+			Integer previousLevelFromEnd = level - 1;
+			Integer parentIDFromEnd = this.level2id
+					.get(previousLevelFromEnd);
+			if (parentIDFromEnd != null) {
+				t.setParentId(parentIDFromEnd);
+			}
+		}		
 	}
 
 }

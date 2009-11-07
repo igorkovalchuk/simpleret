@@ -28,10 +28,19 @@ class ImportDataHolder {
 	 *  3 => 0
 	 *  4 => 0
 	 *  
-a	 *  We need this data here, especially to store endID values to the database:
+	 *  We need this data here, especially to store endID values to the database:
 	 *  {@link TraceFileReader4SetAdditionalReferences}
 	 *  
 	 * </pre>
 	 */
 	Map<Integer, Integer> startID2endID = new HashMap<Integer, Integer>();
+
+	void setVocabularyCache(VocabularyCache vocabularyCache) {
+		this.vocabularyCache = vocabularyCache;
+	}
+
+	void setStartID2endID(Map<Integer, Integer> startID2endID) {
+		this.startID2endID = startID2endID;
+	}
+
 }

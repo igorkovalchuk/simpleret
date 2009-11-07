@@ -18,6 +18,7 @@ import com.googlecode.simpleret.database.HibernateUtility;
 import com.googlecode.simpleret.database.Trace;
 import com.googlecode.simpleret.database.Vocabulary;
 import com.googlecode.simpleret.database.VocabularyCache;
+import com.googlecode.simpleret.viewer.ui.FrameMainMenu;
 
 public class Viewer extends JEditorPane {
 
@@ -149,13 +150,16 @@ public class Viewer extends JEditorPane {
 		
 		JFrame frame = new JFrame(Constants.TITLE_VIEWER);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 		Viewer viewer = new Viewer(initialData);
 		viewer.showSelection();
 		viewer.setEditable(false);
-		
+		viewer.addPropertyChangeListener(
+				new FrameListener(viewer, initialData));
+
 		JScrollPane sp = new JScrollPane(viewer);
 		
+		frame.setJMenuBar(new FrameMainMenu(viewer).getJJMenuBar());
 		frame.setContentPane(sp);
 		frame.setPreferredSize(	new Dimension(
 				Constants.VIEWER_WIDTH, Constants.VIEWER_HEIGHT));
