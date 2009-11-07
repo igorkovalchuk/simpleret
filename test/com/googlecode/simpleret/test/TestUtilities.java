@@ -23,34 +23,6 @@ public class TestUtilities {
 	}
 	*/
 
-	/**
-	 * 
-	 * @param prefix
-	 * 			a prefix for file, example &amp;/hibernate-test&amp;
-	 * @return
-	 * 		Configuration for HibernateUtility
-	 */
-	public static Configuration getConfiguration(String prefix) throws IOException {
-
-		try {
-			Class.forName("org.hsqldb.jdbcDriver");
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-
-		Configuration cnf = new Configuration();
-
-		InputStream inStream = TestUtilities.class.getResourceAsStream(prefix
-				+ ".properties");
-		Properties properties = new Properties();
-		properties.load(inStream);
-		cnf.setProperties(properties);
-
-		cnf.configure(prefix + ".cfg.xml");
-
-		return cnf;
-	}
-
 	public static IDatabaseTester getDatabaseTester(String prefix) {
 
 		IDatabaseTester tester = null;

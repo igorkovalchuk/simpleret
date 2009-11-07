@@ -1,8 +1,41 @@
 package com.googlecode.simpleret;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import org.hibernate.cfg.Configuration;
 
 public class Utilities {
+
+	/**
+	 * 
+	 * @param prefix
+	 * 			a prefix for file, example &amp;/hibernate-test&amp;
+	 * @return
+	 * 		Configuration for HibernateUtility
+	 */
+	public static Configuration getConfiguration(String prefix) throws IOException {
+
+		try {
+			Class.forName("org.hsqldb.jdbcDriver");
+		} catch (Throwable e) {
+			throw new RuntimeException(e);
+		}
+
+		Configuration cnf = new Configuration();
+
+		InputStream inStream = Utilities.class.getResourceAsStream(prefix
+				+ ".properties");
+		Properties properties = new Properties();
+		properties.load(inStream);
+		cnf.setProperties(properties);
+
+		cnf.configure(prefix + ".cfg.xml");
+
+		return cnf;
+	}
 
 	// Check - is it a supported OS ?
 	// Return base directory in APPDATA.

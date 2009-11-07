@@ -44,7 +44,7 @@ public class TraceImporter {
 	private String fileName = "";
 	private Long threadID = null;
 
-	private void process() {
+	public void process() {
 		Insets insets = new Insets(3, 3, 3, 3);
 		constraints.insets = insets;
 		this.selectFile();
@@ -57,6 +57,10 @@ public class TraceImporter {
 			System.exit(0);
 		}
 
+		this.store();
+	}
+
+	public void processWebStart() {
 		this.store();
 	}
 
@@ -171,11 +175,6 @@ public class TraceImporter {
 		references.storeReferences(dataHolder);
 		logger.info("Done.");
 		System.exit(0);
-	}
-
-	public static void main(String[] args) {
-		TraceImporter importer = new TraceImporter();
-		importer.process();
 	}
 
 }

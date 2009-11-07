@@ -1,0 +1,161 @@
+<html>
+<head>
+
+  <title>Help</title>
+
+<style type="text/css">
+	body {font-family: sans-serif;}
+	code {color: green;}
+</style>
+
+</head>
+
+<body>
+
+<p></p>
+
+<h1 style="text-align:center;">Simple Reverse Engineering Tool</h1>
+
+<p></p>
+
+<ol>
+  <li><a href="#record">Recording a program trace</a></li>
+  <li><a href="#import">Importing a program trace</a></li>
+  <li><a href="#view">Program Trace Viewer - keyboard reference</a></li>
+</ol>
+
+<p></p>
+
+<h2 style="text-align:center;"><a name="record">1. Recording a program trace</a></h2>
+
+<p></p>
+
+<ol>
+
+<li>Create a new directory to hold your configuration file and output in APPDATA;</li>
+
+<p></p>
+
+<code>
+cd %APPDATA%<br></br>
+mkdir simpleret<br></br>
+cd simpleret<br></br>
+</code>
+
+<p></p>
+
+<li>Create a configuration file here "trace.cfg.test.txt" with the next
+content:</li>
+
+<p></p>
+
+<code>
+# Enable tracing.<br></br>
+[enabled]<br></br>
+<br></br>
+# Print results to the file.<br></br>
+[file]:trace.output.test.txt<br></br>
+<br></br>
+# Also print results to the Console.<br></br>
+[display]<br></br>
+<br></br>
+# Include these classes.<br></br>
+[include]:com.googlecode.*<br></br>
+</code>
+
+<p></p>
+
+<li>Run an example:</li>
+
+<p></p>
+
+<code>java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,address=8000 com.googlecode.simpleret.example.Main</code>
+
+<p></p>
+
+<p>or (for a shared memory transport on the Microsoft Windows platform)</p>
+
+<p></p>
+
+<code>java -Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n,address=mysharedmemory com.googlecode.simpleret.example.Main</code>
+
+<p></p>
+
+<p>Note: for a large real life applications please also set <code>-Xrunjdwp:suspend=n</code> and turn on the Trace Recorder only temporarily, i.e. for some concrete
+actions.</p>
+
+<p></p>
+
+<p>Listening for transport dt_socket at address: 8000</p>
+
+<p></p>
+
+<li>Run a trace recorder:</li>
+
+<code>java -cp ".;log4j_path/log4j.jar;jdk_lib_path/tools.jar" com.googlecode.simpleret.recorder.JPDATraceRecorder -host 127.0.0.1 -port 8000</code>
+
+<p></p>
+
+<p>For a shared memory transport:</p>
+
+<code>-local some-shared-memory-address-name</code>
+
+<p></p>
+
+Otherwise:<br />
+
+<code>-host somehost -port someport</code>
+
+<p></p>
+
+<li>See results in trace.out.test.txt</li>
+
+</ol>
+
+<p></p>
+
+<h2 style="text-align:center;"><a name="import">2. Importing a program trace</a></h2>
+
+<p></p>
+
+...
+
+<p></p>
+
+<h2 style="text-align:center;"><a name="view">3. Program Trace Viewer - keyboard reference</a></h2>
+
+<p></p>
+
+<p>Keys:</p>
+<ul>
+  <li>Q,W,E,R - scrolling backward;</li>
+  <li>A,S,D,F - scrolling forward;</li>
+  <li>Z - show only colourised records;</li>
+  <li>1,2,3 - prepare a list of signatures to filter; every signature looks
+    like com.package.class.method or com.package.class or like a Java regular
+    expression ^.*method.*$ ;</li>
+  <li>0 - Instrumental window;</li>
+  <li>9 - input a range of identifiers to show;</li>
+  <li>X - display that range;</li>
+  <li>L - change the current deepness (level) of view;</li>
+  <li>H - HTML export;</li>
+  <li>U - AmaterasUML export;</li>
+</ul>
+
+<p>Note: click on a link (number/id) to use the current colour of that line for
+&quot;Clean colour&quot;.</p>
+
+<p></p>
+
+<h2 style="text-align:center;"><a name="record">License</a></h2>
+
+<p>
+GNU General Public License v2, http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
+</p>
+
+<p>
+(c) Copyright Igor Kovalchuk and others 2008, 2009.  All rights reserved.
+</p>
+
+</body>
+</html>
