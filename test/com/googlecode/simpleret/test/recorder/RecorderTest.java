@@ -6,10 +6,10 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.googlecode.simpleret.Utilities;
 import com.googlecode.simpleret.recorder.Configuration;
 import com.googlecode.simpleret.recorder.Recorder;
 import com.googlecode.simpleret.recorder.Signature;
-import com.googlecode.simpleret.test.TestUtilities;
 
 public class RecorderTest {
 
@@ -17,7 +17,7 @@ public class RecorderTest {
 	public void testTraceRecorder() throws Exception {
 
 		Configuration c = new Configuration();
-		BufferedReader reader = TestUtilities.getResurceReader("/files/cfg/trace.cfg.test.txt");
+		BufferedReader reader = Utilities.getResurceReader("/files/cfg/trace.cfg.test.txt");
 		c.setInputReader(reader);
 		c.setTesting(true);
 		c.initialize();

@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 
 import com.googlecode.simpleret.Constants;
+import com.googlecode.simpleret.utilities.FileOrResource;
 
 abstract public class TraceFileReaderAbstract extends TraceImporterProgress {
 
@@ -38,6 +39,14 @@ abstract public class TraceFileReaderAbstract extends TraceImporterProgress {
 	 * We call this method after the reading a file.
 	 */
 	abstract protected void afterRead(boolean errors);
+
+	protected void startProcessing(FileOrResource object) {
+		if (object.isResource()) {
+			this.startProcessing(object.getReader(), object.getSizeOfFile());
+		} else {
+			this.startProcessing(object.getNameOfFile());
+		}
+	}
 
 	/**
 	 * 1) Call child's class method 'before reading a file';<br>

@@ -8,9 +8,9 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import com.googlecode.simpleret.Utilities;
 import com.googlecode.simpleret.importer.ThreadsData;
 import com.googlecode.simpleret.importer.TraceFileReader1Initial;
-import com.googlecode.simpleret.test.TestUtilities;
 
 public class TraceFileReader1InitialTest {
 
@@ -18,7 +18,7 @@ public class TraceFileReader1InitialTest {
 
 	@Before
 	public void before() {
-		br = TestUtilities.getResurceReader("/files/test-trace-2.txt");
+		br = Utilities.getResurceReader("/files/test-trace-2.txt");
 	}
 
 	@After

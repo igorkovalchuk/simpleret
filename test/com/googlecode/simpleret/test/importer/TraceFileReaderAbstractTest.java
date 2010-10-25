@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import com.googlecode.simpleret.Utilities;
 import com.googlecode.simpleret.importer.TraceFileReaderAbstract;
-import com.googlecode.simpleret.test.TestUtilities;
 
 public class TraceFileReaderAbstractTest {
 
@@ -34,7 +34,7 @@ public class TraceFileReaderAbstractTest {
 
 		};
 
-		BufferedReader br = TestUtilities
+		BufferedReader br = Utilities
 				.getResurceReader("/files/test-trace-1.txt");
 
 		reader.startProcessing(br);

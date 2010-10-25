@@ -6,13 +6,12 @@ import java.io.StringReader;
 import org.dbunit.Assertion;
 import org.dbunit.IDatabaseTester;
 import org.dbunit.dataset.IDataSet;
-import org.dbunit.dataset.ITable;
-import org.dbunit.dataset.filter.DefaultColumnFilter;
 import org.dbunit.dataset.xml.FlatXmlDataSet;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.googlecode.simpleret.Utilities;
 import com.googlecode.simpleret.importer.TraceFileReader2StoreVocabulary;
 import com.googlecode.simpleret.test.All;
 import com.googlecode.simpleret.test.DatabaseTestBase;
@@ -25,7 +24,7 @@ public class TraceFileReader2StoreVocabularyTest extends DatabaseTestBase {
 
 	@Before
 	public void before() throws Exception {
-		br = TestUtilities.getResurceReader("/files/test-trace-2.txt");
+		br = Utilities.getResurceReader("/files/test-trace-2.txt");
 		db = TestUtilities.getDatabaseTester(All.CONFIGURATION);
 
 		IDataSet ds = new FlatXmlDataSet(new StringReader("<dataset />"));
