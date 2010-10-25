@@ -1,14 +1,11 @@
 package com.googlecode.simpleret.test;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.Properties;
 
 import org.dbunit.IDatabaseTester;
 import org.dbunit.JdbcDatabaseTester;
-import org.hibernate.cfg.Configuration;
 
 public class TestUtilities {
 
@@ -53,13 +50,6 @@ public class TestUtilities {
 		}
 
 		return tester;
-	}
-
-	public static BufferedReader getResurceReader(String resource) {
-		InputStream is = TestUtilities.class.getResourceAsStream(resource);
-		InputStreamReader isr = new InputStreamReader(is);
-		BufferedReader br = new BufferedReader(isr);
-		return br;
 	}
 
 }

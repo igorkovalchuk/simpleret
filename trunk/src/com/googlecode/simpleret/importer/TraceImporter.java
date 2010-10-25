@@ -14,6 +14,7 @@ import org.apache.log4j.Logger;
 
 import com.googlecode.simpleret.Constants;
 import com.googlecode.simpleret.Utilities;
+import com.googlecode.simpleret.utilities.FileOrResource;
 import com.googlecode.simpleret.viewer.FrameProgressBar;
 
 /**
@@ -41,7 +42,7 @@ public class TraceImporter {
 
 	private GridBagConstraints constraints = new GridBagConstraints();
 
-	private String fileName = "";
+	private FileOrResource source = null;
 	private Long threadID = null;
 
 	public void process() {
@@ -60,7 +61,9 @@ public class TraceImporter {
 		this.store();
 	}
 
-	public void processWebStart() {
+	public void processWebStart(FileOrResource object, Long threadID) {
+		this.source = object;
+		this.threadID = threadID;
 		this.store();
 	}
 
@@ -81,7 +84,8 @@ public class TraceImporter {
 
 		int value = fileChooser.showOpenDialog(null);
 		if (value == JFileChooser.APPROVE_OPTION) {
-			fileName = fileChooser.getSelectedFile().getPath();
+			String fileName = fileChooser.getSelectedFile().getPath();
+			source = new FileOrResource(fileName);
 		} else {
 			System.exit(0);
 		}
@@ -94,7 +98,7 @@ public class TraceImporter {
 	 */
 	private void seekThreads() {
 		TraceFileReader1Initial reader = new TraceFileReader1Initial();
-		reader.startProcessing(fileName);
+		reader.startProcessing(source);
 		Map<Long, ThreadsData> threads = reader.getThreadsData();
 		if (threads.size() == 0) {
 			JOptionPane.showMessageDialog(null, "This is an incorrect file.");
@@ -156,7 +160,7 @@ public class TraceImporter {
 		storeVocabulary.setProgressBar(progressBar);
 		storeVocabulary
 				.setProgressBarDescription("Stage 2 of 4. Create vocabulary: ");
-		storeVocabulary.startProcessing(fileName);
+		storeVocabulary.startProcessing(source);
 
 		logger.info("Store trace ...");
 		ImportDataHolder dataHolder = new ImportDataHolder();
@@ -165,7 +169,7 @@ public class TraceImporter {
 		storeTrace.setProgressBar(progressBar);
 		storeTrace
 				.setProgressBarDescription("Stage 3 of 4. Store program trace: ");
-		storeTrace.startProcessing(fileName);
+		storeTrace.startProcessing(source);
 
 		logger.info("Set additional references ...");
 		TraceFileReader4SetAdditionalReferences references = new TraceFileReader4SetAdditionalReferences();
@@ -174,7 +178,7 @@ public class TraceImporter {
 				.setProgressBarDescription("Stage 4 of 4. Create additional references: ");
 		references.storeReferences(dataHolder);
 		logger.info("Done.");
-		System.exit(0);
+		progressBar.dipose();
 	}
 
 }
