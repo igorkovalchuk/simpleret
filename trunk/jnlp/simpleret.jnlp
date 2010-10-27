@@ -21,10 +21,10 @@
     <jar href="libraries/trunk/hsqldb.jar"/>
     <jar href="libraries/trunk/hibernate3.jar"/>
     <jar href="libraries/trunk/dom4j-1.6.1.jar"/>
-    <jar href="libraries/trunk/commons-logging-1.1.1.jar"/>
-    <jar href="libraries/trunk/commons-collections-3.1.jar"/>
+    <jar href="libraries/trunk/commons-logging-1.0.4.jar"/>
+    <jar href="libraries/trunk/commons-collections-2.1.1.jar"/>
     <jar href="libraries/trunk/log4j-1.2.15.jar"/>
-	<jar href="libraries/trunk/jta-1.1.jar"/>
+	<jar href="libraries/trunk/jta.jar"/>
 
 	<jar href="libraries/trunk/antlr-2.7.7-modified.jar"/>
 
