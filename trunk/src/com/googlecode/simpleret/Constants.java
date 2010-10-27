@@ -22,6 +22,8 @@ public class Constants {
 
 	private static boolean webStartMode = false;
 
+	public final static String DISABLED_IN_WEB_START_MODE = "This menu item is disabled in Java Web Start mode."; 
+
 	public static boolean isWebStartMode() {
 		return webStartMode;
 	}
