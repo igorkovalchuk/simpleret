@@ -7,16 +7,15 @@ http://www.hsqldb.org/                  hsqldb_1_8_1_1.zip
 
 hsqldb.jar
 
-http://www.hibernate.org/               hibernate-distribution-3.3.2.GA-dist.tar.gz
+http://www.hibernate.org/		hibernate-3.2.5.ga.zip
 
-antlr-2.7.6.jar
-commons-collections-3.1.jar
+commons-collections-2.1.1.jar
+commons-logging-1.0.4.jar
 dom4j-1.6.1.jar
 hibernate3.jar
-jta-1.1.jar
-slf4j-api-1.5.8.jar
+jta.jar
 
-http://commons.apache.org/logging/		commons-logging-1.1.1.jar
+http://www.antlr.org						antlr-2.7.7.jar
 
-http://antlr.org						antlr-2.7.7.jar
-Note: antlr-2.7.7-modified.jar - commented out System.getProperties("ANTLR_...) for use in Java WebStart
+Note:
+antlr-2.7.7-modified.jar - commented out System.getProperties("ANTLR_...) for use in Java WebStart
