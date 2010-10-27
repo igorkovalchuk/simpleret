@@ -5,7 +5,8 @@
 
 <hibernate-mapping>
 
-    <class name="com.googlecode.simpleret.database.Trace" table="te">
+	<!-- lazy="false" to avoid proxy library in Java WebStart -->
+    <class name="com.googlecode.simpleret.database.Trace" table="te" lazy="false">
 
         <!-- <id name="id" column="ID">
             <generator class="native"/>

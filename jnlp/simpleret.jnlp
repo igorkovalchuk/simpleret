@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File for Simple Reverse Engineering Tool -->
+<jnlp spec="1.0+"
+      codebase="http://simpleret.googlecode.com/svn" 
+      href="trunk/jnlp/simpleret.jnlp">
+  <information>
+    <title>SimpleRET Demo Application</title>
+    <vendor>Igor Kovalchuk</vendor>
+    <homepage href="http://code.google.com/p/simpleret/"/>
+    <description>Simple Reverse Engineering Tool</description>
+    <description kind="short">SimpleRET Example</description>
+    <offline-allowed/>
+	<icon href="trunk/jnlp/64x64.gif" width="64" height="64"/>
+  </information>
+
+  <resources>
+    <j2se version="1.5+"/>
+
+    <jar href="libraries/trunk/simpleret.jar" main="true"/>
+
+    <jar href="libraries/trunk/hsqldb.jar"/>
+    <jar href="libraries/trunk/hibernate3.jar"/>
+    <jar href="libraries/trunk/dom4j-1.6.1.jar"/>
+    <jar href="libraries/trunk/commons-logging-1.1.1.jar"/>
+    <jar href="libraries/trunk/commons-collections-3.1.jar"/>
+    <jar href="libraries/trunk/log4j-1.2.15.jar"/>
+	<jar href="libraries/trunk/jta-1.1.jar"/>
+
+	<jar href="libraries/trunk/antlr-2.7.7-modified.jar"/>
+
+  </resources>
+  <application-desc main-class="com.googlecode.simpleret.RunWebStart"/>
+</jnlp>

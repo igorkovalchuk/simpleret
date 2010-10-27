@@ -43,7 +43,7 @@ public class FrameInstruments {
 	public void show(final Data data, final Viewer viewer) {
 		final JFrame frame = new JFrame(Constants.TITLE_INSTRUMENTS);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setAlwaysOnTop(false);
+//		frame.setAlwaysOnTop(false);
 
 		Font font = new Font("Dialog", Font.PLAIN, 24);
 

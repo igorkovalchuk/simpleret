@@ -67,7 +67,9 @@ public class FrameInputLevel {
 		frame.setLayout(layout);
 		frame.setPreferredSize(new Dimension(150, 100));
 		frame.setLocation(400, 300);
-		frame.setAlwaysOnTop(true);
+		if (!Constants.isWebStartMode()) {
+			frame.setAlwaysOnTop(true);
+		}
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();

@@ -5,7 +5,8 @@
 
 <hibernate-mapping>
 
-    <class name="com.googlecode.simpleret.database.Vocabulary" table="vy">
+	<!-- lazy="false" to avoid proxy library in Java WebStart -->
+    <class name="com.googlecode.simpleret.database.Vocabulary" table="vy" lazy="false">
         <id name="id" column="word_id">
             <generator class="native"/>
         </id>

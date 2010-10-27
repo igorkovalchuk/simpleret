@@ -19,4 +19,15 @@ public class Constants {
 	public final static int SQL_CAPACITY = 500;
 	
 	public final static int PROGRESS_MAX = 1000; 
+
+	private static boolean webStartMode = false;
+
+	public static boolean isWebStartMode() {
+		return webStartMode;
+	}
+
+	public static void setWebStartMode(boolean value) {
+		Constants.webStartMode = value;
+	}
+
 }
