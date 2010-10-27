@@ -105,7 +105,7 @@ public class FrameInputRange {
 		frame.setLayout(layout);
 		frame.setPreferredSize(new Dimension(420, 100));
 		frame.setLocation(250, 200);
-		frame.setAlwaysOnTop(false);
+//		frame.setAlwaysOnTop(false);
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();

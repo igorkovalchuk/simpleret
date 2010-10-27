@@ -12,7 +12,8 @@ import com.googlecode.simpleret.viewer.Viewer;
 public class RunWebStart {
 
 	public static void main(String[] args) {
-		System.getProperties().setProperty("simpleret.test", "true");
+
+		Constants.setWebStartMode(true);
 
 		Configuration cnf;
 

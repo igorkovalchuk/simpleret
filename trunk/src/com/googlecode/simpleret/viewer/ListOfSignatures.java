@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import com.googlecode.simpleret.Constants;
+
 public class ListOfSignatures {
 
 	private Map<String, Set<String>> signatures = new HashMap<String, Set<String>>();
@@ -70,7 +72,9 @@ public class ListOfSignatures {
 		frame.add(b1);
 		frame.add(b2);
 
-		frame.setAlwaysOnTop(true);
+		if (!Constants.isWebStartMode()) {
+			frame.setAlwaysOnTop(true);
+		}
 		frame.setLocation(25,100);
 		frame.setPreferredSize(new Dimension(950, 350));
 		frame.pack();
@@ -118,7 +122,9 @@ public class ListOfSignatures {
 		frame.add(jsp);
 		frame.add(b1);
 
-		frame.setAlwaysOnTop(true);
+		if (!Constants.isWebStartMode()) {
+			frame.setAlwaysOnTop(true);
+		}
 		frame.setLocation(25,100);
 		frame.setPreferredSize(new Dimension(950, 350));
 		frame.pack();

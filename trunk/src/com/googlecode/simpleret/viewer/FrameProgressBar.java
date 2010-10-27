@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JProgressBar;
 import javax.swing.SwingUtilities;
 
+import com.googlecode.simpleret.Constants;
+
 public class FrameProgressBar {
 
 	private JProgressBar progress;
@@ -36,7 +38,9 @@ public class FrameProgressBar {
 		frame.add(progress);
 
 		frame.setLocation(350, 300);
-		frame.setAlwaysOnTop(true);
+		if (!Constants.isWebStartMode()) {
+			frame.setAlwaysOnTop(true);
+		}
 		frame.pack();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
