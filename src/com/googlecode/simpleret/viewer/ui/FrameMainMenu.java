@@ -15,6 +15,7 @@ import javax.swing.JSeparator;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 
+import com.googlecode.simpleret.Constants;
 import com.googlecode.simpleret.viewer.FrameConstants;
 import com.googlecode.simpleret.viewer.Viewer;
 
@@ -76,8 +77,8 @@ public class FrameMainMenu {
 			jMenuFile.setText("File");
 			jMenuFile.setHorizontalTextPosition(SwingConstants.TRAILING);
 			jMenuFile.setHorizontalAlignment(SwingConstants.LEADING);
-			jMenuFile.add(getJMenuItemOpenProj());
-			jMenuFile.add(getJMenuItemImportNewProj());
+			//jMenuFile.add(getJMenuItemOpenProj());
+			//jMenuFile.add(getJMenuItemImportNewProj());
 			jMenuFile.add(getJMenuItemExportHTML());
 			jMenuFile.add(getJMenuItemExportAUML());
 			jMenuFile.add(getJMenuItemExit());
@@ -154,6 +155,10 @@ public class FrameMainMenu {
 	private JMenuItem getJMenuItemExportHTML() {
 		if (jMenuItemExportHTML == null) {
 			jMenuItemExportHTML = new JMenuItem();
+			if (Constants.isWebStartMode()) {
+				jMenuItemExportHTML.setEnabled(false);
+				jMenuItemExportHTML.setToolTipText(Constants.DISABLED_IN_WEB_START_MODE);
+			}
 			jMenuItemExportHTML.setPreferredSize(new Dimension(150, 20));
 			jMenuItemExportHTML.setText("Export to HTML ...");
 			jMenuItemExportHTML.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_I,
@@ -176,6 +181,10 @@ public class FrameMainMenu {
 	private JMenuItem getJMenuItemExportAUML() {
 		if (jMenuItemExportAUML == null) {
 			jMenuItemExportAUML = new JMenuItem();
+			if (Constants.isWebStartMode()) {
+				jMenuItemExportAUML.setEnabled(false);
+				jMenuItemExportAUML.setToolTipText(Constants.DISABLED_IN_WEB_START_MODE);
+			}
 			jMenuItemExportAUML.setPreferredSize(new Dimension(200, 20));
 			jMenuItemExportAUML.setText("Export to AmaterasUML ...");
 			jMenuItemExportAUML.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_U,
