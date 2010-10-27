@@ -1,3 +1,4 @@
+#labels Featured
 =SimpleRET Viewer=
 
 http://simpleret.googlecode.com/svn/trunk/doc/result_2_viewer.png
