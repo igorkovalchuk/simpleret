@@ -7,6 +7,8 @@ For this *demo version* Windows and Linux users can use *Java Web Start*
 
   * Open simpleret-20101027-1255.jnlp file in your browser.
 
+  * Press the "*Cancel*" button in the message box _"The application has requested permission to establish connections to <your computer>. Do you want to allow this action?"_
+
 This Java Web Start application runs *restricted*, which means that it does not have access to some system resources such as local files. 
 
 [http://en.wikipedia.org/wiki/Java_Web_Start] (English)
