@@ -1,0 +1,29 @@
+#labels Featured
+Reverse Engineering Tool for Java/Enterprise Java.
+
+Perl - write me if you need...
+
+It may be useful if you have a lot of undocumented source code.
+
+A small portfolio & hobby project. Are you developing something like this ? - Write me please.
+
+----
+
+It allows to draw UML sequence-diagrams by using
+[http://amateras.sourceforge.jp AmaterasUML]
+(Eclipse plug-in for drawing UML diagrams).
+
+Also you can use it without AmaterasUML, but only for generation html views of filtered program trace.
+
+----
+
+This project is based on 
+[http://en.wikipedia.org/wiki/Tracing_%28software%29 Software tracing].
+
+----
+
+Pre-Alfa.
+[http://en.wikipedia.org/wiki/Software_release_life_cycle#Software_development_stages (Software development stages)]
+
+It isn't easy to use this tool today, it just an ugly tool, but you may try.
+A good team is much more effective than this tool. Keep your time! :-)
