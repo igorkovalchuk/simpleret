@@ -5,7 +5,10 @@ Reverse engineering for Perl applications - started, please write me if you need
 
 It may be useful if you have a lot of undocumented source code.
 
-This is a small portfolio & hobby project.
+----
+
+This is a small portfolio & hobby project. It isn't easy to use this tool today, but you may try.
+
 Are you developing something like this ? - Write me please.
 I think that is good to have a different approaches/attempts/efforts.
 
@@ -29,5 +32,4 @@ Pre-Alfa.
 
 ----
 
-It isn't easy to use this tool today, it just an ugly tool, but you may try.
 A good team is much more effective than this tool, because everybody is open to help you! Keep your time! :-)
