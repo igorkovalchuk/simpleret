@@ -1,11 +1,13 @@
 #labels Featured
-This is a reverse engineering tool for Java/Enterprise Java.
+This is a reverse engineering tool for Java/Enterprise Java applications.
 
-Perl - write me if you need...
+Reverse engineering for Perl applications - started, please write me if you need this feature today ...
 
 It may be useful if you have a lot of undocumented source code.
 
-A small portfolio & hobby project. Are you developing something like this ? - Write me please. I think that is good to have a different approaches/attempts/efforts.
+This is a small portfolio & hobby project.
+Are you developing something like this ? - Write me please.
+I think that is good to have a different approaches/attempts/efforts.
 
 ----
 
@@ -25,5 +27,7 @@ This project is based on
 Pre-Alfa.
 [http://en.wikipedia.org/wiki/Software_release_life_cycle#Software_development_stages (Software development stages)]
 
+----
+
 It isn't easy to use this tool today, it just an ugly tool, but you may try.
-A good team is much more effective than this tool. Keep your time! :-)
+A good team is much more effective than this tool, because everybody is open to help you! Keep your time! :-)
