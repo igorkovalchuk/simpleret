@@ -1,11 +1,11 @@
 #labels Featured
-Reverse Engineering Tool for Java/Enterprise Java.
+This is a reverse engineering tool for Java/Enterprise Java.
 
 Perl - write me if you need...
 
 It may be useful if you have a lot of undocumented source code.
 
-A small portfolio & hobby project. Are you developing something like this ? - Write me please.
+A small portfolio & hobby project. Are you developing something like this ? - Write me please. I think that is good to have a different approaches/attempts/efforts.
 
 ----
 
