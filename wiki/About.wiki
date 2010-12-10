@@ -5,6 +5,8 @@ Reverse engineering for Perl applications - started, please write me if you need
 
 It may be useful if you have a lot of undocumented source code.
 
+See [HowToStart] and [Screenshots].
+
 ----
 
 This is a small portfolio & hobby project. It isn't easy to use this tool today, but you may try.
