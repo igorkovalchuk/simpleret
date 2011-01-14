@@ -1,6 +1,8 @@
 #labels Featured
 =Online=
 
+==Start==
+
 For this *demo version* Windows and Linux users can use *Java Web Start*
 
   * If you have not Java on your PC then download it from [http://www.java.com]
@@ -16,6 +18,29 @@ This Java Web Start application runs *restricted*, which means that it does not 
 [http://ru.wikipedia.org/wiki/Java_Web_Start] (Russian)
 
 _Linux was tested with !OpenJDK Java 6 Web Start._
+
+==Usage==
+
+On the screen you can see a window with some strange content - this is a short list of recorded methods (the trace). A real application can have hundreds of thousands of such records.
+
+  # click _(Edit)-(List of Signatures N1)_ or press a key (1);
+  # enter com.googlecode.simpleret.example.Gamma.start and press OK; this field can accept a Java regular expression too;
+  # click _(Edit)-(Instrumantal Box)_ or press a key (0) - now you can see the _Instruments_;
+  # click on _Signatures_ and press OK;
+  # choose the yellow color - you will see that all signatures of com.googlecode.simpleret.example.Gamma.start are in yellow;
+  # anytime you can show/hide the marked records by pressing (Z)-key or  _(View)-(Show Colorized)_ - this is the main feature of this software - the filtering of a program trace;
+  # click _(Edit)-(Instrumantal Box)_;
+  # set the checkbox _Include current element_ to OFF, and _Include parents_ to ON, click on _Signatures_, and press OK;
+  # choose the grey color - you will see that all *parent* signatures of com.googlecode.simpleret.example.Gamma.start are grey now;
+  # press (Z)-key on and off just to see the differences;
+  # click _(Edit)-(Instrumantal Box)_;
+  # set the checkbox _Include current element_ to OFF, and _Include sub-elements_ to ON, click on _Signatures_, and press OK;
+  # choose the green color - you will see that all *child* signatures of com.googlecode.simpleret.example.Gamma.start are green;
+  # press (Z)-key on and off; 
+
+Also you can select a color by pressing on the signature's number (on the left side of the list) to unmark/delete/undelete all(!) records of the selected color - _(Edit)-(Instrumantal Box)-(By selected color)_.
+
+
 
 =Locally=
 
