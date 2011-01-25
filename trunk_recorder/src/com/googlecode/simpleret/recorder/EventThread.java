@@ -64,7 +64,7 @@ public class EventThread extends Thread {
     private boolean vmDied = true;     // VMDeath occurred
 
     // Maps ThreadReference to ThreadTrace instances
-    private Map traceMap = new HashMap();
+    private Map<ThreadReference,ThreadTrace> traceMap = new HashMap<ThreadReference,ThreadTrace>();
 
     private final Recorder recorder;
 
@@ -373,8 +373,8 @@ public class EventThread extends Thread {
      */
     private void classPrepareEvent(ClassPrepareEvent event)  {
         EventRequestManager mgr = vm.eventRequestManager();
-	List fields = event.referenceType().visibleFields();
-	for (Iterator it = fields.iterator(); it.hasNext(); ) {
+	List<Field> fields = event.referenceType().visibleFields();
+	for (Iterator<Field> it = fields.iterator(); it.hasNext(); ) {
 	    Field field = (Field)it.next();
 	    ModificationWatchpointRequest req = 
 		     mgr.createModificationWatchpointRequest(field);

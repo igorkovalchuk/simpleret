@@ -1,5 +1,6 @@
 package com.googlecode.simpleret.recorder;
 
+import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -83,13 +84,21 @@ public class JPDATraceRecorder {
 	}
 
 	public static void main(String[] args) throws Exception{
+		System.out.println("");
 		JPDATraceRecorder recorder = new JPDATraceRecorder();
 		recorder.arguments(args);
-		recorder.run();
+		try {
+			recorder.run();
+		} catch (ConnectException e) {
+			System.out.println("Looks like the other program doesn't wait for a debugging/tracing connection ...\n");
+			throw e;
+		}
 	}
 
-		
 	public void run() throws Exception{
+
+        Configuration c = new Configuration();
+        c.setInputFile("trace.cfg.test.txt");
 
 		AttachingConnector connector = null;
 		AttachingConnector connectorShared = null;
@@ -152,8 +161,19 @@ public class JPDATraceRecorder {
                 
         vm.setDebugTraceMode(0);
         
-        Configuration c = new Configuration();
-        c.setInputFile("trace.cfg.test.txt");
+//        Configuration c = new Configuration();
+
+        /*
+        String configurationData = "" +
+        	"[enabled]\n" +
+        	"[display]\n" +
+        	"[include]:com.googlecode.*\n" +
+        	"[file]:trace.output.test3.txt\n";
+
+        StringReader sr = new StringReader(configurationData);
+        c.setInputReader(new BufferedReader(sr));
+        */
+
         c.initialize();
         String[] include = c.getIncludeSignatures();
 
@@ -163,6 +183,9 @@ public class JPDATraceRecorder {
         eventThread.setEventRequests(false);
         eventThread.start();
         vm.resume();
+
+        System.out.println("\nPlease see results in [" + c.getOutputFileName() + "]\n");
+
 	}
 
 }

@@ -63,6 +63,7 @@ public class Configuration {
 	}
 
 	public void setInputFile(String path) {
+		System.out.println("Input file: " + path + "\n");
 		inputFile = new File(base + path);
 	}
 
@@ -286,7 +287,7 @@ public class Configuration {
 	private void openFile() {
 
 		try {
-			if (testing) {
+			if (testing || (outputFile == null)) {
 				fileWriter = new StringWriter();
 			} else {
 				// Create a new file, or use existing;
@@ -323,6 +324,10 @@ public class Configuration {
 
 	public void setTesting(boolean testing) {
 		this.testing = testing;
+	}
+
+	public String getOutputFileName() {
+		return outputFileName;
 	}
 
 }
