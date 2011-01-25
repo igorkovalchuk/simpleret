@@ -8,12 +8,10 @@ import com.googlecode.simpleret.test.importer.TraceFileReader1InitialTest;
 import com.googlecode.simpleret.test.importer.TraceFileReader2StoreVocabularyTest;
 import com.googlecode.simpleret.test.importer.TraceFileReaderAbstractTest;
 import com.googlecode.simpleret.test.db.DatabaseTest;
-import com.googlecode.simpleret.test.recorder.RecorderTest;
 
 @RunWith(Suite.class)
 @SuiteClasses(
 		{
-			RecorderTest.class,
 			DatabaseTest.class,
 			TraceFileReaderAbstractTest.class,
 			TraceFileReader1InitialTest.class,
