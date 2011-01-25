@@ -49,9 +49,15 @@ Today it is not packaged, so please use *Eclipse Europa IDE* and _Import_ this p
 
 ==Recording a program trace==
 
-  * Create a new directory to hold your configuration file and output in APPDATA;
 
-  * cd %APPDATA% mkdir simpleret cd simpleret 
+You can find the Trace Recorder in *svn/trunk_recorder*
+
+
+  * Create a new directory to hold your configuration file and output in APPDATA (in Linux - yourhomepath/simpleret);
+
+  * cd %APPDATA%
+  * mkdir simpleret
+  * cd simpleret 
 
   * Create a configuration file here "trace.cfg.test.txt" with the nextcontent:
 
@@ -73,6 +79,8 @@ Today it is not packaged, so please use *Eclipse Europa IDE* and _Import_ this p
 
 Run an example:
 
+(see *sample.bat*)
+
 {{{
 java -Xdebug -Xrunjdwp:transport=dt_socket,server=y,address=8000 com.googlecode.simpleret.example.Main
 }}}
@@ -83,11 +91,13 @@ or (for a shared memory transport on the Microsoft Windows platform)
 java -Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n,address=mysharedmemory com.googlecode.simpleret.example.Main
 }}}
 
-Note: for a large real life applications please also set -Xrunjdwp:suspend=n and turn on the Trace Recorder only temporarily, i.e. for some concreteactions.
+Note: for a large real life applications please also set -Xrunjdwp:suspend=n and turn on the Trace Recorder only temporarily, i.e. for some concrete actions.
 
 Listening for transport dt_socket at address: 8000
 
 Run a trace recorder:
+
+(see *recorder.bat*)
 
 {{{
 java -cp ".;log4j_path/log4j.jar;jdk_lib_path/tools.jar" com.googlecode.simpleret.recorder.JPDATraceRecorder -host 127.0.0.1 -port 8000
