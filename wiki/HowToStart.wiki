@@ -121,6 +121,15 @@ See results in *trace.out.test.txt*
 
 ...
 
+That is simple.
+
+Note: today this software deletes the previous trace recorder's data from the database if you are importing a new data. You need to create one more database (and point hibernate.properties - hibernate.connection.url to this new database) when you want to keep the previous data.
+
+com.googlecode.simpleret.RunImport
+
+...
+
+
 ==Program Trace Viewer - keyboard reference==
 
 Keys:
