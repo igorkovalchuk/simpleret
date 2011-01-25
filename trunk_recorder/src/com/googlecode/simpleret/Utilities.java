@@ -1,13 +1,10 @@
 package com.googlecode.simpleret;
 
+
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Properties;
-
-import org.hibernate.cfg.Configuration;
 
 public class Utilities {
 
@@ -18,58 +15,31 @@ public class Utilities {
 		return br;
 	}
 
-	/**
-	 * 
-	 * @param prefix
-	 * 			a prefix for file, example &amp;/hibernate-test&amp;
-	 * @return
-	 * 		Configuration for HibernateUtility
-	 */
-	public static Configuration getConfiguration(String prefix) throws IOException {
-
-		try {
-			Class.forName("org.hsqldb.jdbcDriver");
-		} catch (Throwable e) {
-			throw new RuntimeException(e);
-		}
-
-		Configuration cnf = new Configuration();
-
-		InputStream inStream = Utilities.class.getResourceAsStream(prefix
-				+ ".properties");
-		Properties properties = new Properties();
-		properties.load(inStream);
-		cnf.setProperties(properties);
-
-		cnf.configure(prefix + ".cfg.xml");
-
-		return cnf;
-	}
-
-	// Check - is it a supported OS ?
-	// Return base directory in APPDATA.
+	// Return base directory in APPDATA (OS Windows) or user.home (OS Linux).
 	public static String getApplicationDataPath() {
-		int system = 0;
-		
-		String os = System.getenv("OS");
+
+		String os = System.getProperty("os.name");
 		if (os != null) {
 			os = os.toLowerCase();
-			if (os.startsWith("windows")) {
-				system = 1;
-			}
 		}
-		
-		if (system != 1) {
-			throw new RuntimeException("Unsupported OS. " + System.getenv("OS"));
+
+		String appdata = null;
+
+		if (os.startsWith("windows")) {
+			appdata = System.getenv("APPDATA");
+		} else {
+			// Probably, Linux OS;
+			appdata = System.getProperty("user.home");
 		}
-		
-		String appdata = System.getenv("APPDATA");
-		
+
 		if (appdata == null) {
-			throw new RuntimeException("Can't find an environment variable APPDATA.");
+			throw new RuntimeException("Unknown error: APPDATA/user.home");
 		}
-		
+
 		appdata = ( appdata + "/simpleret/" ) . replace('\\', '/');
+
+		System.out.println("Looking in ... " + appdata + "\n");
+
 		File simpleret = new File(appdata);
 		if ( ! simpleret.exists() ) {
 			if ( ! simpleret.mkdir() ) {
@@ -78,16 +48,6 @@ public class Utilities {
 			System.out.println("Created a new directory: " + appdata);
 		}
 		return appdata;
-	}
-
-	public static void sleep(long millis) {
-		try {
-			System.out.println("Sleep: " + millis/1000 + " sec.");
-			Thread.sleep(millis);
-			System.out.println("Sleep - done");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

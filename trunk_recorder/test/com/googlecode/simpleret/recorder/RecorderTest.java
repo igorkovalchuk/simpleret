@@ -1,4 +1,4 @@
-package com.googlecode.simpleret.test.recorder;
+package com.googlecode.simpleret.recorder;
 
 import java.io.BufferedReader;
 
