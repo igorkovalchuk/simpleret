@@ -29,7 +29,8 @@ public class Recorder {
 
 		if (! configuration.containsRuntimeFilter(signature)) {
 			//System.out.println("Ignored:    " + signature.getClassName());
-			System.out.println(signature.getStamp() + "		" + counter++);
+			//System.out.println(signature.getStamp() + "		" + counter++);
+			System.out.println(counter++);
 			return;
 		}
 
