@@ -75,7 +75,7 @@ You can find the Trace Recorder in *svn/trunk_recorder*
 # Include these classes. This is the fastest option.
 [include]:com.googlecode.* 
 
-# This is a slow option.
+# This is a very very slow option. Please use [include] option to make it faster.
 # If specified, then ignore all calls,
 # except classes that begin with this word.
 [runtime]:com.googlecode.special.
