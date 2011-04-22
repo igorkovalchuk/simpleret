@@ -22,8 +22,20 @@ public class Recorder {
 	public Recorder(Configuration configuration) {
 		Recorder.configuration = configuration;
 	}
-	
+
+	static long counter = 0;
+
 	synchronized public void trace(Signature signature) {
+
+		if (! configuration.containsRuntimeFilter(signature)) {
+			//System.out.println("Ignored:    " + signature.getClassName());
+			System.out.println(signature.getStamp() + "		" + counter++);
+			return;
+		}
+
+		System.out.print(counter++);
+		System.out.print(" ");
+
 		if (signature.isEntry()) {
 			threadData = configuration.getThreadData(signature.getThreadID());
 			threadData.increaseCallDepth();

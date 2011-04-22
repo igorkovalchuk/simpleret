@@ -58,7 +58,7 @@ public class EventThread extends Thread {
     private final String[] filter;   // Packages to include/exclude
     private final PrintWriter writer;  // Where output goes
 
-    static String nextBaseIndent = ""; // Starting indent for next thread
+    //static String nextBaseIndent = ""; // Starting indent for next thread
 
     private boolean connected = true;  // Connected to VM
     private boolean vmDied = true;     // VMDeath occurred
@@ -123,7 +123,7 @@ public class EventThread extends Thread {
         for (int i=0; i<filter.length; ++i) {
         	excReq.addClassFilter(filter[i]);
         }
-        excReq.setSuspendPolicy(EventRequest.SUSPEND_ALL);
+        excReq.setSuspendPolicy(EventRequest.SUSPEND_NONE);
         excReq.enable();
 
         MethodEntryRequest menr = mgr.createMethodEntryRequest();
@@ -142,7 +142,7 @@ public class EventThread extends Thread {
 
         ThreadDeathRequest tdr = mgr.createThreadDeathRequest();
 	// Make sure we sync on thread death
-        tdr.setSuspendPolicy(EventRequest.SUSPEND_ALL);
+        tdr.setSuspendPolicy(EventRequest.SUSPEND_NONE);
         tdr.enable();
 
 /*
@@ -163,23 +163,24 @@ public class EventThread extends Thread {
      */
     class ThreadTrace {
         final ThreadReference thread;
-        final String baseIndent;
+        //final String baseIndent;
 	static final String threadDelta = "                     ";
-	StringBuffer indent;
+
+	//StringBuffer indent;
 
 	ThreadTrace(ThreadReference thread) {
             this.thread = thread;
-            this.baseIndent = nextBaseIndent;
-	    indent = new StringBuffer(baseIndent);
-	    nextBaseIndent += threadDelta;
+//            this.baseIndent = nextBaseIndent;
+//	    indent = new StringBuffer(baseIndent);
+//	    nextBaseIndent += threadDelta;
 	    println("====== " + thread.name() + " ======");
 	}
 
 	private void println(String str) {
 	    //writer.print(indent);
 	    //writer.println(str);
-		//System.out.print(indent);
-		//System.out.println(str);
+//		System.out.print(indent);
+//		System.out.println(str);
 	}
 
 	void methodEntryEvent(MethodEntryEvent event)  {
@@ -197,11 +198,11 @@ public class EventThread extends Thread {
 	    println(event.method().name() + "  --  " 
                     + event.method().declaringType().name());
 		 
-	    indent.append("| ");
+//	    indent.append("| ");
 	}
 	
 	void methodExitEvent(MethodExitEvent event)  {
-	    indent.setLength(indent.length()-2);
+//	    indent.setLength(indent.length()-2);
 
 		recorder.trace(
 				new Signature(
@@ -248,13 +249,13 @@ public class EventThread extends Thread {
 	void stepEvent(StepEvent event)  {
             // Adjust call depth
             int cnt = 0;
-            indent = new StringBuffer(baseIndent);
+  //          indent = new StringBuffer(baseIndent);
             try {
                 cnt = thread.frameCount();
             } catch (IncompatibleThreadStateException exc) {
             }
             while (cnt-- > 0) {
-                indent.append("| ");
+   //             indent.append("| ");
             }
 
             EventRequestManager mgr = vm.eventRequestManager();
@@ -262,7 +263,7 @@ public class EventThread extends Thread {
         }
 
 	void threadDeathEvent(ThreadDeathEvent event)  {
-            indent = new StringBuffer(baseIndent);
+    //        indent = new StringBuffer(baseIndent);
 	    println("====== " + thread.name() + " end ======");
         }
     }	
@@ -287,7 +288,7 @@ public class EventThread extends Thread {
         if (event instanceof ExceptionEvent) {
             exceptionEvent((ExceptionEvent)event);
         } else if (event instanceof ModificationWatchpointEvent) {
-            fieldWatchEvent((ModificationWatchpointEvent)event);
+            // fieldWatchEvent((ModificationWatchpointEvent)event);
         } else if (event instanceof MethodEntryEvent) {
             methodEntryEvent((MethodEntryEvent)event);
         } else if (event instanceof MethodExitEvent) {
@@ -297,7 +298,7 @@ public class EventThread extends Thread {
         } else if (event instanceof ThreadDeathEvent) {
             threadDeathEvent((ThreadDeathEvent)event);
         } else if (event instanceof ClassPrepareEvent) {
-            classPrepareEvent((ClassPrepareEvent)event);
+            //classPrepareEvent((ClassPrepareEvent)event);
         } else if (event instanceof VMStartEvent) {
             vmStartEvent((VMStartEvent)event);
         } else if (event instanceof VMDeathEvent) {
@@ -354,12 +355,12 @@ public class EventThread extends Thread {
     private void stepEvent(StepEvent event)  {
          threadTrace(event.thread()).stepEvent(event);
     }
-
+/*
     // Forward event for thread specific processing
     private void fieldWatchEvent(ModificationWatchpointEvent event)  {
          threadTrace(event.thread()).fieldWatchEvent(event);
     }
-
+*/
     void threadDeathEvent(ThreadDeathEvent event)  {
 	ThreadTrace trace = (ThreadTrace)traceMap.get(event.thread());
 	if (trace != null) {  // only want threads we care about
@@ -367,10 +368,11 @@ public class EventThread extends Thread {
         }
     }
 
-    /**
+    /*
      * A new class has been loaded.  
      * Set watchpoints on each of its fields
      */
+    /*
     private void classPrepareEvent(ClassPrepareEvent event)  {
         EventRequestManager mgr = vm.eventRequestManager();
 	List<Field> fields = event.referenceType().visibleFields();
@@ -385,6 +387,7 @@ public class EventThread extends Thread {
 	    req.enable();
 	}
     }
+    */
 
     private void exceptionEvent(ExceptionEvent event) {
 	ThreadTrace trace = (ThreadTrace)traceMap.get(event.thread());

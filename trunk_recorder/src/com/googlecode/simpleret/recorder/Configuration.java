@@ -16,7 +16,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import java.util.logging.Logger;
 
 import com.googlecode.simpleret.Utilities;
 import com.googlecode.simpleret.recorder.ThreadData;
@@ -24,7 +24,7 @@ import com.googlecode.simpleret.recorder.ThreadData;
 
 public class Configuration {
 
-	static Logger logger = Logger.getLogger(Configuration.class);
+	static Logger logger = Logger.getLogger(Configuration.class.getSimpleName());
 	
 	private boolean enabled = false;
 
@@ -32,6 +32,8 @@ public class Configuration {
 	
 	// include only these signatures;
 	private Set<String> initial;
+	
+	private Set<String> runtime;
 	
 	// signatures to exclude;
 	private Set<String> signatures;
@@ -108,11 +110,12 @@ public class Configuration {
 					return;
 				}
 
-				logger.debug("Trace recorder initialization");
+				logger.info("Trace recorder initialization");
 
 				String string;
 
 				initial = new HashSet<String>();
+				runtime = new HashSet<String>();
 				signatures = new HashSet<String>();
 				signaturesRe = new HashSet<String>();
 				
@@ -141,11 +144,14 @@ public class Configuration {
 							// Some value;
 							if ("[include]".equals(string)) {
 								initial.add(value);
-								logger.debug("include [" + value + "]");
+								logger.info("include [" + value + "]");
+							} else if ("[runtime]".equals(string)) {
+								runtime.add(value);
+								logger.info("runtime [" + value + "]");
 							} else if ("[file]".equals(string)) {
 								
 								if (! value.equals(outputFileName)) {
-									logger.debug("file [" + value + "]");
+									logger.info("file [" + value + "]");
 									this.closeFile();
 									outputFileName = value;
 									outputFile = new File(base + value);
@@ -162,11 +168,11 @@ public class Configuration {
 					} else if (string.startsWith("^")) {
 						// A REGULAR EXPRESSION;
 						signaturesRe.add(string);
-						logger.debug("signature RE [" + string + "]");
+						logger.info("signature RE [" + string + "]");
 					} else {
 						if (!string.equals("")) {
 							signatures.add(string);
-							logger.debug("signature [" + string + "]");
+							logger.info("signature [" + string + "]");
 						}
 					}
 				}
@@ -210,7 +216,7 @@ public class Configuration {
 				
 				if (modes.contains("[display]")) {
 					screen = true;
-					logger.debug("Display tracing.");
+					logger.info("Display tracing.");
 				} else {
 					screen = false;
 				}
@@ -246,6 +252,32 @@ public class Configuration {
 
 	public Set<String> getSignaturesRe() {
 		return signaturesRe;
+	}
+
+	public boolean containsRuntimeFilter(Signature signature) {
+		String name = signature.getClassName();
+
+		Iterator<String> iterator;
+		String mask;
+
+		int size = runtime.size();
+
+		if (size == 0)
+			return true; // allow all signatures;
+
+		if (true) { 
+
+			iterator = runtime.iterator();
+
+			while (iterator.hasNext()) {
+				mask = (String) iterator.next();
+				if (name.startsWith(mask)) {				
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public boolean contains (Signature signature) {
