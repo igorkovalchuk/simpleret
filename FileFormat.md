@@ -1,0 +1,35 @@
+
+```
+
+# version="0.5.0"
+
+# Delimiter between records: TAB
+
+# ID    CALL_DEPTH    THREAD_ID    TIME    SIGNATURE
+
+1	1	1	1	  com.googlecode.simpleret.example.Main.main()
+2	2	1	1	    com.googlecode.simpleret.example.Alpha.<init>()
+3	2	1	1	    com.googlecode.simpleret.example.Alpha.<<return>>()
+4	2	1	1	    com.googlecode.simpleret.example.Alpha.start()
+5	3	1	1	      com.googlecode.simpleret.example.Betha.<init>()
+6	3	1	1	      com.googlecode.simpleret.example.Betha.<<return>>()
+7	3	1	1	      com.googlecode.simpleret.example.Betha.start()
+8	4	1	1	        com.googlecode.simpleret.example.Gamma.<init>()
+9	4	1	1	        com.googlecode.simpleret.example.Gamma.<<return>>()
+10	4	1	1	        com.googlecode.simpleret.example.Gamma.start()
+11	5	1	1	          com.googlecode.simpleret.example.Gamma.inside1()
+12	6	1	1	            com.googlecode.simpleret.example.Gamma.inside2()
+13	6	1	1	            com.googlecode.simpleret.example.Gamma.<<return>>()
+14	5	1	1	          com.googlecode.simpleret.example.Gamma.<<return>>()
+15	4	1	1	        com.googlecode.simpleret.example.Gamma.<<return>>()
+16	4	1	1	        com.googlecode.simpleret.example.Gamma.start()
+17	5	1	1	          com.googlecode.simpleret.example.Gamma.inside1()
+18	6	1	1	            com.googlecode.simpleret.example.Gamma.inside2()
+19	6	1	1	            com.googlecode.simpleret.example.Gamma.<<return>>()
+20	5	1	1	          com.googlecode.simpleret.example.Gamma.<<return>>()
+21	4	1	1	        com.googlecode.simpleret.example.Gamma.<<return>>()
+22	3	1	1	      com.googlecode.simpleret.example.Betha.<<return>>()
+23	2	1	1	    com.googlecode.simpleret.example.Alpha.<<return>>()
+24	1	1	1	  com.googlecode.simpleret.example.Main.<<return>>()
+
+```
