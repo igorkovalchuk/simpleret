@@ -100,3 +100,8 @@ http://www.agilej.com/ , the list of diagrams is in the bottom part of that page
 
 `Divsense` http://divsense.com , a mix of mind map and a programmer's editor.
 
+---
+
+**New records**
+
+https://www.overops.com/ - as far as I understand this "simple" thing makes the process of the bug-fixing faster for the production apps, because it simplifies the work with logging and stores the variables at the moment of an exception.
