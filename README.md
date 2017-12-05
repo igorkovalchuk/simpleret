@@ -112,3 +112,7 @@ http://rmtoo.florath.net/ https://github.com/florath/rmtoo
 **New records**
 
 https://www.overops.com/ - as far as I understand this "simple" thing makes the process of the bug-fixing faster for the production apps, because it simplifies the work with logging and stores the variables at the moment of an exception.
+
+https://github.com/alexzaitsev/apk-dependency-graph - Android dependency visualizer.
+
+https://github.com/PaulTaykalo/objc-dependency-visualizer
