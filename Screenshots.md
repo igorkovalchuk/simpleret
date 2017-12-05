@@ -1,11 +1,11 @@
 # SimpleRET Viewer #
 
-![http://simpleret.googlecode.com/svn/trunk/doc/result_2_viewer.png](http://simpleret.googlecode.com/svn/trunk/doc/result_2_viewer.png)
+![1](../master/doc/result_2_viewer.png)
 
 # An example of export to AmaterasUML #
 
-![http://simpleret.googlecode.com/svn/trunk/doc/result_1.png](http://simpleret.googlecode.com/svn/trunk/doc/result_1.png)
+![2](../master/doc/result_1.png)
 
 # An example of export to HTML #
 
-![http://simpleret.googlecode.com/svn/trunk/doc/result_1_html.png](http://simpleret.googlecode.com/svn/trunk/doc/result_1_html.png)
+![3](../master/doc/result_1_html.png)
