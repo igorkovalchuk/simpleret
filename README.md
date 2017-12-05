@@ -1,10 +1,10 @@
-This is a small portfolio & hobby project for reverse engineering Java/Enterprise Java applications. [About](About.md) ...
+This is a small portfolio & hobby project for reverse engineering Java/Enterprise Java applications. [About](../wiki/About.md) ...
 
 
 ---
 
 
-Это небольшой проект, который предназначался для записи и фильтрации результата трассировки выполнения программы на Java, чтобы помочь понять, как работает приложение [About\_Ru](About_Ru.md) ...
+Это небольшой проект, который предназначался для записи и фильтрации результата трассировки выполнения программы на Java, чтобы помочь понять, как работает приложение [About\_Ru](../wiki/About_Ru.md) ...
 
 Проект остановлен, но в результате остался список ссылок, который я продолжаю пополнять и теперь.
 
@@ -16,17 +16,20 @@ This is a small portfolio & hobby project for reverse engineering Java/Enterpris
 
 `MaintainJ` http://maintainj.com/ , a commercial tool, generate interactive sequence diagram from call trace.
 
-`UMLGraph` http://umlgraph.org/ , drawing `UML` diagrams automatically and declaratively.
+`UMLGraph` ~~http://umlgraph.org/~~ , drawing `UML` diagrams automatically and declaratively.
+https://www.spinellis.gr/umlgraph/index.html
+https://github.com/dspinellis/UMLGraph
 
 `PlantUML` http://plantuml.sourceforge.net/
 
-`CodeCity` http://www.inf.usi.ch/phd/wettel/codecity.html , a really excellent tool, limited to non-commercial usage. Also you may try to look at this http://manhattan.inf.usi.ch/ - a basic port for Eclipse of `CodeCity`.
+`CodeCity` http://www.inf.usi.ch/phd/wettel/codecity.html http://wettel.github.io/index.html, a really excellent tool, limited to non-commercial usage. Also you may try to look at this http://manhattan.inf.usi.ch/ - a basic port for Eclipse of `CodeCity`.
 
-`Relo`, an open source tool, http://relo.csail.mit.edu/ - no longer available. Look at http://www.architexa.com , it is free for open source projects; for other projects it is available for free for individuals and for teams of up to three developers, [August 2012](http://www.architexa.com/blog/architexa-toolsuite-is-now-available-for-free/).
+`Relo`, an open source tool, http://relo.csail.mit.edu/ - no longer available. Look at http://www.architexa.com , it is free for open source projects; for other projects it is available for free for individuals and for teams of up to three developers, ~~[August 2012](http://www.architexa.com/blog/architexa-toolsuite-is-now-available-for-free/)~~.
 
 `CodeMaps` http://www.codemaps.org/ , explore open source code together, view Javadoc, examine source, share architectural documentation, and more (by Architexa).
 
 `AmaterasUML`, an open source tool, lightweight, has an `API`, http://amateras.sourceforge.jp/cgi-bin/fswiki_en/wiki.cgi?page=AmaterasUML
+https://github.com/takezoe/amateras-modeler
 
 Answers.com - [Tools to generate sequence diagram for Java](http://wiki.answers.com/Q/Is_there_any_tool_to_generate_sequence_diagram_for_a_complex_Java_application)
 
@@ -36,19 +39,20 @@ Answers.com - [Tools to generate sequence diagram for Java](http://wiki.answers.
 
 `Enterprise Architect` http://www.sparxsystems.com.au/ , a commercial tool for `UML`, database, mind maps, etc.
 
-P.S. http://railroad.rubyforge.org/
-
+P.S. ~~http://railroad.rubyforge.org/~~
 
 ---
 
 
 **Books**
 
-http://www.aosabook.org/en/index.html (read online)
+~~http://www.aosabook.org/en/index.html~~ (read online)
+https://github.com/aosabook
+https://github.com/wtanaka/aosabook
 
 Перевод статей из "Архитектура приложений с открытым исходным кодом" (aosabook)
 
-http://rus-linux.net/MyLDP/BOOKS/Architecture-Open-Source-Applications/index.html
+http://rus-linux.net/MyLDP/BOOKS/Architecture-Open-Source-Applications/index.html (!)
 
 
 ---
@@ -60,7 +64,7 @@ Code Review Open Source проектов на Java
 
 http://habrahabr.ru/post/149074/
 
-http://queuepy.com/ , https://twitter.com/queuepy
+~~http://queuepy.com/~~ , https://twitter.com/queuepy
 
 
 ---
@@ -68,7 +72,7 @@ http://queuepy.com/ , https://twitter.com/queuepy
 
 **`AgileJ`**
 
-diagrams of [Android](http://www.agilej.com:8080/?project=android), [Open JDK](http://www.agilej.com:8080/?project=openJDK), [JBoss](http://www.agilej.com:8080/?project=jboss), [Eclipse](http://www.agilej.com:8080/?project=eclipse) (but it works slow on my 1.7 `GHz` `PC`)
+diagrams of [Android](http://www.agilej.com/android/#index-view), [JDK](http://www.agilej.com/jdk/#index-view), [JBoss](http://www.agilej.com/jboss/#!index-view), [Eclipse](http://www.agilej.com/eclipse/#index-view) (but it works slow on my `PC`)
 
 http://www.agilej.com/ , the list of diagrams is in the bottom part of that page.
 
@@ -82,7 +86,10 @@ http://www.agilej.com/ , the list of diagrams is in the bottom part of that page
 
 `CHISEL projects `http://thechiselgroup.org , and also `Eclipse Diver` http://eclipsediver.wordpress.com/ , https://github.com/thechiselgroup/Diver
 
-`rmtoo` Open source requirements management tool, http://www.flonatel.de/projekte/rmtoo/ http://sourceforge.net/projects/rmtoo/
+`rmtoo` Open source requirements management tool, ~~http://www.flonatel.de/projekte/rmtoo/~~ ~~http://sourceforge.net/projects/rmtoo/~~
+http://rmtoo.florath.net/ https://github.com/florath/rmtoo
+
+`Doorstop` https://github.com/jacebrowning/doorstop
 
 `Tigris.org` projects http://requirements.tigris.org/
 
@@ -98,7 +105,7 @@ http://www.agilej.com/ , the list of diagrams is in the bottom part of that page
 
 **New concepts**
 
-`Divsense` http://divsense.com , a mix of mind map and a programmer's editor.
+~~`Divsense` http://divsense.com~~ , a mix of mind map and a programmer's editor.
 
 ---
 
