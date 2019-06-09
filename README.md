@@ -99,6 +99,7 @@ http://rmtoo.florath.net/ https://github.com/florath/rmtoo
 
 `Visualize Your JavaEE Dependencies In 30 Seconds` http://www.adam-bien.com/roller/abien/entry/visualize_your_javaee_dependencies_in https://github.com/Thomas-S-B/visualee/
 
+Thanks to O'Reilly Newsletter for these links: https://divan.dev/posts/visual_programming_go/ , http://blog.hello2morrow.com/2018/12/a-promising-new-metric-to-track-maintainability/
 
 ---
 
