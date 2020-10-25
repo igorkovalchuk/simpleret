@@ -128,3 +128,37 @@ https://github.com/Bogdan-Lyashenko/codecrumbs , https://dou.ua/lenta/articles/d
 https://cloud.codeventory.com/explore
 
 https://github.com/hediet/vscode-debug-visualizer
+
+**GitHub search - visualization**
+
+https://github.com/search?q=visualization :
+
+https://github.com/codilime/veles
+
+https://github.com/vega/vega
+
+https://github.com/pcottle/learnGitBranching
+
+https://github.com/airbnb/visx
+
+...
+
+**GitHub search - code visualization**
+
+https://github.com/search?q=code+visualization :
+
+https://github.com/fzaninotto/CodeFlower
+
+https://github.com/es-analysis/plato
+
+https://github.com/Bogdan-Lyashenko/js-code-to-svg-flowchart
+
+https://github.com/rictic/code_swarm
+
+https://github.com/algorithm-visualizer/algorithm-visualizer
+
+...
+
+**Creative Coding**
+
+https://github.com/terkelg/awesome-creative-coding
